@@ -1,4 +1,3 @@
-var currentProfile;
 
 var attributeTypeLookup= { 
 		strength: "physical",
@@ -19,31 +18,29 @@ var attributeTypeLookup= {
 var currentBuild = { activeSkills: {}, passiveSkills: {}, attributes: {} };
 
 
-function activeContains(skillName)
+
+function buildContainsSkill(skillName)
 {
-	if ( typeof currentBuild.activeSkills[skillName] == 'undefined')
-	{
-		return false;
-	}
-	else
+	if (! (typeof currentBuild.activeSkills[skillName] === 'undefined'))
 	{
 		return true;
 	}
+	else if ( !(typeof currentBuild.passiveSkills[skillName] === 'undefined'))
+	{
+		return true;
+	}
+	return false;
 }
 
-function passiveContains(skillName)
-{
-	if ( typeof currentBuild.passiveSkills[skillName] == 'undefined')
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
+
 
 function setActiveSkillSelectorOptions(elemId, selectedOption=null)
+{	setSkillSelectorOptions(elemId, "active");
+}
+
+
+
+function setSkillSelectorOptions(elemId, skillTypeString)
 {
 	var elem=$("select#"+elemId);
 	elem.children().remove();
@@ -52,13 +49,13 @@ function setActiveSkillSelectorOptions(elemId, selectedOption=null)
 			.attr("value",0)
 			.text("Select Skill"));
 
-	$.each(jsonData.skills.active, function (idx, obj){
+	$.each(jsonData.skills[skillTypeString], function (idx, obj){
 		
-		if (  ! activeContains(idx)  )
+		if (  ! buildContainsSkill(idx)  )
 		{
 			if (
-					(jsonData.skills.active[idx].type === "basic" ) 
-				||  ($.inArray(jsonData.skills.active[idx].type, currentProfile.restrictions.skills) !== -1	)
+					(jsonData.skills[skillTypeString][idx].type === "basic" ) 
+				||  ($.inArray(jsonData.skills[skillTypeString][idx].type, currentProfile.restrictions.skills) !== -1	)
 			
 			   )
 			{
@@ -72,9 +69,17 @@ function setActiveSkillSelectorOptions(elemId, selectedOption=null)
 	
 }
 
+
+
 function generateActiveSkillListSelector(skillName)
 {
-	return "<select " +  ((null == skillName ) ? "" : generateIdTag(skillName, "_activeskillselector") )+ "><select>";
+	return generateSkillListSelector(skillName, 'active')
+}
+
+function generateSkillListSelector(skillName,skillTypeString)
+{
+	
+	return "<select " +  ((null == skillName ) ? "" : generateIdTag(skillName, "_" + skillTypeString+"skillselector") )+ "><select>";
 	
 }
 
@@ -97,16 +102,25 @@ function generateIdTag(prefix, suffix)
 
 // Active Skill Row stuff
 
-function deleteActiveSkill(skillName)
+
+
+
+function deleteSkill(skillName, skillTypeString)
 {
-	delete currentBuild.activeSkills[skillName];
+	delete currentBuild[skillTypeString+"Skills"][skillName];
 	$("tr#" + skillName + "_row").remove();
-	updateActiveSkillTotals();
+	updateSkillTotals();
 	updateSkillPointTotals();
 }
 
 
 function updateSkillPointTotals()
+{
+	$("#remaining_skill_points").text(
+			currentProfile.skillpoints - getTotalUsedSkillPoints());
+}
+
+function getTotalUsedSkillPoints()
 {
 	var usedPointTotal = 0;
 
@@ -140,28 +154,18 @@ function updateSkillPointTotals()
 		}
 	});
 	
-	$("#remaining_skill_points").text(
-			currentProfile.skillpoints - usedPointTotal);
+	return usedPointTotal;
 	
 }
 
 function generateRemovableActiveSkillTableRow(skillName, skillLevel)
 {
-	//<td><button>Remove<button></td>
-	//<td>Skill</td>
-	//td>Attribute</td>
-	//<td>Requirement</td>
-	//<td>Point Cost</td>
-	//<td>Offense</td>
-	//<td>Strategy</td>
-	//<td>Description</td>
-
 	return	"<tr " +generateIdTag(skillName, "_row") + ">"+
 	 "<td "
 	       +generateIdTag(skillName, "_remove") + ">" +
 	       "<button type='button' " + generateIdTag(skillName,"_removebutton") +">Remove</button></td>"
 	  	 + "<td " + generateIdTag(skillName, "_skillname") + " >" + removeUnderlines(skillName) + "</td>"
-//	  	 + "<td " + generateIdTag(skillName, "_attrib") + " >" + jsonData.skills.active[skillName].attribute + "</td>"
+	  	 + "<td " + generateIdTag(skillName, "_attrib") + " >" + jsonData.skills.active[skillName].attribute + "</td>"
 	+ "<td " + generateIdTag(skillName, "_requirement") + " >"+ jsonData.skills.active[skillName].requirements[skillLevel] + "</td>"
 	+ "<td><select " + generateIdTag(skillName, "_level") + " onChange='changeActiveSkillLevel(this)' >" 
 	         + "<option value='basic'" + ((skillLevel == "basic")? " selected=true": "") + ":>Basic</option>"
@@ -179,9 +183,9 @@ function generateRemovableActiveSkillTableRow(skillName, skillLevel)
 	 	((typeof jsonData.skills.active[skillName].info.cost.strategy === "undefined" ) ?
 	 			"":jsonData.skills.active[skillName].info.cost.strategy)
 	 	+"</td>" 	
-	 	+ "<td><span class='basic_description'>"+ jsonData.skills.active[skillName].description.basic + "</span>"  
+	 	+ "<td class='desccell'><span class='basic_description skillselected' > Basic: "+ jsonData.skills.active[skillName].description.basic + "</span>"  
  		+ ((typeof jsonData.skills.active[skillName].description.mastery === "undefined")?
-		 			"" : ( "<p class='mastery_description'>" + jsonData.skills.active[skillName].description.mastery + "</p>")
+		 			"" : ( "<p class='mastery_description'>Mastery: " + jsonData.skills.active[skillName].description.mastery + "</p>")
 		 			)
 		 +"</td>" 
 	+ "</tr>";
@@ -214,7 +218,7 @@ function generateUnremovableActiveSkillTableRowHtml(skillName)
  	+ 	((typeof jsonData.skills.active[skillName].info.cost.strategy === "undefined" ) ?
 	 			"":jsonData.skills.active[skillName].info.cost.strategy)
 	 	+"</td>" 
- 	+ "<td><span class='basic_description'>"+ jsonData.skills.active[skillName].description.basic + "</span>"  
+ 	+ "<td class='desccell'><span class='basic_description'>"+ jsonData.skills.active[skillName].description.basic + "</span>"  
  		+ ((typeof jsonData.skills.active[skillName].description.mastery === "undefined")?
 		 			"" : ( "<p class='mastery_description'>" + jsonData.skills.active[skillName].description.mastery + "</p>")
 		 			)
@@ -232,7 +236,12 @@ function generateUnremovableActiveSkillTableRowHtml(skillName)
 
 function deleteActiveSkillEvent()
 {
-	deleteActiveSkill(findBase(this.id));
+	deleteSkill(findBase(this.id), 'active');
+}
+
+function deletePassiveSkillEvent()
+{
+	deleteSkill(findBase(this.id), 'passive');
 }
 
 function addRemoveableActiveSkillRow(skillName) {
@@ -250,74 +259,72 @@ function addIntrinsicActiveSkillRow(skillName) {
 
 
 function setPassiveSkillSelectorOptions(elemId, selectedOption=null)
-{
-	var elem=$("select#"+elemId);
-	elem.children().remove();
-
-	$.each(jsonData.skills.passive, function (idx, obj){
-		
-		if ( (idx === selectedOption) || ( ! passiveContains(idx) ) )
-		{
-			if (
-					(jsonData.skills.passive[idx].type === "basic" ) 
-				||  ($.inArray(jsonData.skills.passive[idx].type, currentProfile.restrictions.skills) !== -1	)
-			
-			   )
-			{
-				if ( !(typeof selectOption === "undefined" ) && selectOption === idx )
-				{
-					elem
-					.append($("<option></option>")
-							.attr("value",idx)
-							.attr("selected",true)
-							.text(obj.name));
-				}
-				else
-				{
-					elem
-					.append($("<option></option>")
-							.attr("value",idx)
-							.text(obj.name));
-				}
-			}
-		}
-	});
+{	setSkillSelectorOptions(elemId, "passive");
 }
+
+
+
+
 function generateUnremovablePassiveSkillTableRowHtml(skillName)
 {
 	//<td><td> // button to remove, not for this row, though.
 	//<td>Skill</td>
 	//td>Attribute</td>
 	//<td>Requirement</td>
+	//<td>Level</td>
 	//<td>Point Cost</td>
 	//<td>Description</td>
+	return "<tr " + generateIdTag(skillName, "_row") + " >" 
+	 + "<td " + generateIdTag(skillName, "_remove") + "></td>" 
+	 + "<td " + generateIdTag(skillName, "_skillname") + " >" + removeUnderlines(skillName) + "</td>" 
+	 + "<td " + generateIdTag(skillName, "_attrib") + " ></td>" 
+	 + "<td " + generateIdTag(skillName, "_requirement") + " ></td>" 
+	 +"<td></td>"
+	 + "<td " + generateIdTag(skillName, "_pointcost") + ">0</td>" 
+	+ "<td  class='desccell'><span class='basic_description'>"+ jsonData.skills.passive[skillName].description.basic + "</span>"  
+		+ ((typeof jsonData.skills.passive[skillName].description.mastery === "undefined")?
+		 			"" : ( "<p class='mastery_description'>" + jsonData.skills.passive[skillName].description.mastery + "</p>")
+		 			)
+		 +"</td>" 
+	 + "</tr>";
 
-
-	return "<tr " + generateIdTag(skillName, "_row") + " >" +
-	 "<td " + generateIdTag(skillName, "_remove") + "></td>" +
-	 "<td " + generateIdTag(skillName, "_skillname") + " >" + removeUnderlines(skillName) + "</td>" +
-	 "<td " + generateIdTag(skillName, "_attrib") + " ></td>" +
-	 "<td " + generateIdTag(skillName, "_requirement") + " ></td>" +
-	 "<td></td>" +
-	 "<td " + generateIdTag(skillName, "_pointcost") + ">0</td>" +
-	 "<td>"+ jsonData.skills.passive[skillName].description.basic + 
-	 	((typeof jsonData.skills.passive[skillName].description.mastery === "undefined")?
-	 			"" : ( "<p>" + jsonData.skills.passive[skillName].description.mastery + "</p>")
-	 			)
-	 +"</td>" +
-	 "</tr>";
 }
 
 function generateRemovablePassiveSkillTableRowHtml(skillName, skillLevel)
 {
-	return "<tr><td> TODO " + skillName + " " + "</td></tr>";
+	
+	return	"<tr " +generateIdTag(skillName, "_row") + ">"+
+	 "<td "
+	       +generateIdTag(skillName, "_remove") + ">" +
+	       "<button type='button' " + generateIdTag(skillName,"_removebutton") +">Remove</button></td>"
+	  	 + "<td " + generateIdTag(skillName, "_skillname") + " >" + removeUnderlines(skillName) + "</td>"
+	  	 + "<td " + generateIdTag(skillName, "_attrib") + " >" + jsonData.skills.passive[skillName].attribute + "</td>"
+	+ "<td " + generateIdTag(skillName, "_requirement") + " >"+ jsonData.skills.passive[skillName].requirements[skillLevel] + "</td>"
+	+ "<td><select " + generateIdTag(skillName, "_level") + " onChange='changePassiveSkillLevel(this)' >" 
+	         + "<option value='basic'" + ((skillLevel == "basic")? " selected=true": "") + ":>Basic</option>"
+	         + "<option value='mastery'"+ ((skillLevel == "mastery")? " selected=true": "") +">Mastery</option></select></td>"
+	+ "<td " + generateIdTag(skillName, "_pointcost") + ">"
+			+ (jsonData.skills.passive[skillName].cost.basic + ((skillLevel != "basic" ) ? 
+				jsonData.skills.passive[skillName].cost.mastery : 0 )
+			   )
+			+"</td>"
+ 	+ "<td class='desccell'><span class='basic_description skillselected' >Basic: "+ jsonData.skills.passive[skillName].description.basic + "</span>"  
+		+ ((typeof jsonData.skills.passive[skillName].description.mastery === "undefined")?
+		 			"" : ( "<p class='mastery_description'>Mastery: " + jsonData.skills.passive[skillName].description.mastery + "</p>")
+		 			)
+		 +"</td>" 
+	+ "</tr>";
+
 }
 
 function addRemoveablePassiveSkillRow(skillName) {
 	$("table#passive_skills tbody")
 			.append(generateRemovablePassiveSkillTableRowHtml(skillName, "basic"));
-	$("#"+skillName+"_removebutton").bind("click", deletePassiveSkill);
-	setPassiveSkillSelectorOptions($("select#" + generateIdTag(skillName, "_passiveskillselector")), skillName);
+	$("#"+skillName+"_removebutton").bind("click", deletePassiveSkillEvent);
+	setPassiveSkillSelectorOptions( skillName+ "_passiveskillselector", skillName);
+	
+	
+
 };
 
 function addIntrinsicPassiveSkillRow(skillName) {
@@ -475,13 +482,24 @@ function unitTypeChanged(element)  {
 }
 
 
-function updateActiveSkillTotals() 
+function updateSkillTotals() 
 {
 	var slotCount = 5;
 	
 	$.each(currentBuild.activeSkills, function(idx,obj){slotCount = slotCount - 1 });
-
 	$("#active_slots_left").text(slotCount );
+	
+	slotCount=5;
+	
+	$.each(currentBuild.passiveSkills, function(idx,obj){slotCount = slotCount - 1 });
+	$("#passive_slots_left").text(slotCount );
+	
+}
+
+
+function addSkill(skillName, skillLevel, skillTypeString)
+{
+	
 }
 
 
@@ -497,7 +515,7 @@ function addActiveSkill(skillName, skillLevel)
 	{
 		addRemoveableActiveSkillRow(skillName);
 	}
-	updateActiveSkillTotals();
+	updateSkillTotals();
 	updateSkillPointTotals();
 }
 
@@ -514,6 +532,8 @@ function addPassiveSkill(skillName, skillLevel)
 	{
 		addRemoveablePassiveSkillRow(skillName);
 	}
+	updateSkillTotals();
+	updateSkillPointTotals();
 }
 
 function removeActiveSkill(skillName)
@@ -521,15 +541,12 @@ function removeActiveSkill(skillName)
 	delete activeSkill[skillName];
 }
 
-function loadActiveSkillsDropDowns()
+function removePassiveSkill(skillName)
 {
-	
+	delete passiveSkill[skillName];
 }
 
-function loadPassiveSkillDropDowns()
-{
-	
-}
+
 
 function loadUnitType(unitType){
 	
@@ -582,8 +599,6 @@ function loadUnitType(unitType){
 		}
 	});
 	
-	loadActiveSkillsDropDowns();
-	loadPassiveSkillDropDowns();
 	setActiveSkillSelectorOptions("new_activeskillselector",null);
 	setPassiveSkillSelectorOptions("new_passiveskillselector",null);
 }
@@ -603,6 +618,23 @@ function addNewActiveSkill(newSkill)
 		}
 	});
 }
+
+function addNewPassiveSkill(newSkill)
+{
+	addPassiveSkill(newSkill, "basic");
+	setPassiveSkillSelectorOptions("new_passiveskillselector");
+//	$.each($("select[id$=_passiveskillselector]"), function (idx, obj){
+//		if ("new_passiveskillselector" === obj.id)
+//		{
+//			setPassiveSkillSelectorOptions(obj.id);
+//		}
+//		else 
+//		{
+//			setPassiveSkillSelectorOptions(obj.id, obj.value );
+//		}
+//	});
+}
+
 
 
 function removeUnderlines(text) {
@@ -638,31 +670,79 @@ function loadUnitTypeSelectOptions() {
 }
 
 
-function updateSkillLevelDisplays(skillName)
+function skillPointCost(skillName,skillTypeString)
 {
-	
+	var skillLevel = currentBuild[skillTypeString+"Skills"][skillName];
+
+	if ("basic" === skillLevel)
+	{
+		return jsonData.skills[skillTypeString][skillName].cost.basic;
+	}
+	else if ("mastery" === skillLevel)
+	{
+		return jsonData.skills[skillTypeString][skillName].cost.basic
+		   + jsonData.skills[skillTypeString][skillName].cost.mastery ;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+
+function updateSkillLevelDisplays(skillName, skillTypeString)
+{
+	$("tr#"+skillName+"_row #"+skillName + "_pointcost").text(skillPointCost(skillName, skillTypeString));
+	updateSkillPointTotals(skillTypeString);
 }
 
 function changeActiveSkillLevel()
 {
+	changeSkillLevel('active');
+}	
+
+function changePassiveSkillLevel()
+{
+	changeSkillLevel('passive');
+}
+
+function changeSkillLevel(skillType)
+{
 	var skillNameString=findBase(this.event.target.id);
 	
 	var skillLevelString=this.event.target.options[this.event.target.selectedIndex].value;
-	alert(this.event.target.id +
-			
-			" " + this.event.target.options[this.event.target.selectedIndex].value);
 	
-	currentBuild.activeSkills[skillNameString]=skillLevelString;
+	if (skillLevelString === "mastery")
+	{
+		var addedCost=jsonData.skills[skillType][skillNameString].cost.mastery;
+		
+		if ( (getTotalUsedSkillPoints() + addedCost ) > currentProfile.skillpoints)
+		{
+			$("#")
+		}
+	
+	}
+	
+	
+	currentBuild[skillType + "Skills"][skillNameString]=skillLevelString;
 	$("tr#" + skillNameString +"_row .basic_description").css("font-weight","bold").css("font-size","100%");
+	
+	if ("intrisic" !== skillLevelString)
+	{
+		$("tr#" + skillNameString +"_row #"+skillNameString + "_requirement").text(
+				jsonData.skills[skillType][skillNameString].requirements[skillLevelString]
+				);
+
+	}
 	if ("basic" === skillLevelString)
 	{
 		$("tr#" + skillNameString +"_row .mastery_description").css("font-weight","normal").css("font-size","100%");
 	}
 	else
 	{
-		$("tr#" + skillNameString +"_row .mastery_description").css("font-weight","bold").css("font-size","100%");;
+		$("tr#" + skillNameString +"_row .mastery_description").css("font-weight","bold").css("font-size","100%");
 	}
-	updateSkillLevelDisplays(skillNameString);
+	updateSkillLevelDisplays(skillNameString, skillType);
 	
 	
 }

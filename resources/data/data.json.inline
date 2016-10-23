@@ -2556,6 +2556,79 @@ var jsonData={  "profiles": {
           "amulet"
         ]
       }
+    },
+    "vampire" : {
+      "type" : "leader",
+      "rating" : 116, "wounds" : 110,
+      "skillpoints" : 30,
+      "spellpoints" : 0,
+      "attributepoints" : {
+        "physical" : 14,
+        "mental" : 14,
+        "martial" : 17
+      },
+      "attributes" : {
+        "strength" : { "min" : 7, "max" : 18 }, 
+        "toughness" : { "min" : 6, "max" : 15 },  
+        "agility" : { "min" : 6, "max" : 15 },
+        "leadership" : { "min" : 8, "max" : 15 }, 
+        "intelligence" : { "min" : 5, "max" : 15 },
+        "alertness" : { "min" : 7, "max" : 16 }, 
+        "weapon_skill" : { "min" : 4, "max" : 15 }, 
+        "ballistic_skill" : { "min" : 4, "max" : 12 }, 
+        "accuracy" : { "min" : 3, "max" : 9 }
+      },
+      "resistances" : { "poison" : 20, "melee" : 10, "critical_hit" : 5, "wyrdstone" : 25, "magic" : 8, "ranged" : 11, "stun" : 16, "trap" : 0 },
+      "other" : {
+        "movement" : 7
+      },
+      "skills" : [
+        "terror"
+      ],
+      "restrictions" : {
+        "skills" : [
+          "leader",
+          "undead"
+        ],
+        "equipment" : [ "dagger", "flail", "hammer", "mace", "sigmarite_warhammer", "great_flail", "great_hammer", "cloth", "light", "heavy", "shield", "pendant", "amulet", "helmet" ]
+      },
+      "icon" : "sis_sigmarite_matriarch"
+    },
+    "necromancer" : {
+      "type" : "hero",
+      "rating" : 116, "wounds" : 110,
+      "skillpoints" : 30,
+      "spellpoints" : 0,
+      "attributepoints" : {
+        "physical" : 16,
+        "mental" : 16,
+        "martial" : 13
+      },
+      "attributes" : {
+        "agility" : { "min" : 3, "max" : 10 },  
+        "strength" : { "min" : 3, "max" : 9 }, 
+        "toughness" : { "min" : 5, "max" : 15 },  
+        "leadership" : { "min" : 5, "max" : 15 }, 
+        "intelligence" : { "min" : 9, "max" : 20 }, 
+        "alertness" : { "min" : 3, "max" : 9 }, 
+        "weapon_skill" : { "min" : 3, "max" : 12 }, 
+        "ballistic_skill" : { "min" : 5, "max" : 15 }, 
+        "accuracy" : { "min" : 4, "max" : 15 }
+      },
+      "resistances" : { "poison" : 20, "melee" : 10, "critical_hit" : 5, "wyrdstone" : 25, "magic" : 8, "ranged" : 11, "stun" : 16, "trap" : 0 },
+      "other" : {
+        "movement" : 6
+      },
+      "skills" : [
+        "warp_attunement"
+      ],
+      "restrictions" : {
+        "skills" : [
+          "undead"
+        ],
+        "equipment" : [ "dagger", "flail", "hammer", "mace", "sigmarite_warhammer", "great_flail", "great_hammer", "cloth", "light", "heavy", "shield", "pendant", "amulet", "helmet" ]
+      },
+      "icon" : "sis_sigmarite_matriarch"
     }
   },
 
@@ -4665,7 +4738,40 @@ var jsonData={  "profiles": {
           "stackable" : "No"
         },
         "icon" : "possessed_touch_of_palsy"
-      }
+      },
+      "death_trap" : {
+        "name" : "Death Trap", "attribute" : "agility",  "type" : "undead",
+        "requirements" : {  "basic" : 6,  "mastery" : 9  },
+        "cost" : { "basic" : 2,  "mastery" : 4  },
+        "description" : {
+          "basic" : "Place a trapped skull at target location that explodes when an enemy approaches within 2.5 meters. Deals 12-24 damage to everyone within 5m and applies a debuff that reduces Melee and Ranged Hit Chance by 5%. Usable once per turn. Not Stackable.",
+          "mastery" : "Damage increases to 24-48 and Hit Chance penalty to 10%."
+        },
+        "info" : { "cost" : { "offense" : 3 }, "range" : "0m",  "target" : "Special",  "duration" : "0 turn", "stackable" : "No" },        
+        "icon" : "possessed_touch_of_palsy"      
+       },
+      "eye_see_you" : {
+        "name" : "Eye See You", "attribute" : "agility",  "type" : "undead",
+        "requirements" : {  "basic" : 6,  "mastery" : 9  },
+        "cost" : { "basic" : 2,  "mastery" : 4  },
+        "description" : {
+          "basic" : "Place a trapped skull at target location that triggers when an enemy approaches within 5 meters. Applies a debuff to enemies within 10m that reduces Initiative by 10, All Alone, Fear, and Terror by 5% and renders their location visible. Not Stackable. Usable once per turn.",
+          "mastery" : "Initiative penalty increases to 20 and All Alone, Fear and Terror penalty to 10%."
+        },
+        "info" : { "cost" : { "offense" : 2 }, "range" : "0m",  "target" : "Special",  "duration" : "0 turn", "stackable" : "No" },        
+        "icon" : "possessed_touch_of_palsy"      
+       },
+      "death_stench" : {
+        "name" : "Death Stench", "attribute" : "toughess",  "type" : "undead",
+        "requirements" : {  "basic" : 6,  "mastery" : 9  },
+        "cost" : { "basic" : 2,  "mastery" : 4  },
+        "description" : {
+          "basic" : "Reduces Melee Resistance, Parry and Dodge chances by 5% of everyone within a 5 meter radius around the user. Resistible Poison effect. Undead warriors are immune. Not Stackable.",
+          "mastery" : "Melee Resistance, Dodge and Parry chance penalty increases to 10%."
+        },
+        "info" : { "cost" : { "offense" : 2 }, "range" : "0m",  "target" : "Everyone within a 5 meter radius around the user.",  "duration" : "0 turn", "stackable" : "No" },        
+        "icon" : "possessed_touch_of_palsy"      
+       },
     },
     "passive" : {
       "blitz" : {
@@ -6704,7 +6810,54 @@ var jsonData={  "profiles": {
           "basic" : "Enemies who engage or start the turn engaged with the user must perform a Terror test. Failing the test reduces maximum Offense and Strategy Points by 3. The debuff persists until passing a Terror test on turn start. Passing any Terror test will grant immunity to Terror for 2 turns."
         },
         "icon" : "restricted_terror"
+      },
+      "find_the_breach" : {
+        "name" : "Find the Breach",
+        "attribute" : "weapon_skill",
+        "type" : "undead",
+        "requirements" : { "basic" : 6, "mastery" : 9 },
+        "cost" : { "basic" : 2,"mastery" : 4 },
+        "description" : {
+          "basic" : "When another ally is engaged with the same target, increases Armour Absorption bypass by 5%. Not Stackable.",
+          "mastery" : "Armour Absorption bypass increases to 10%."
+        },
+        "icon" : "possessed_tzeentch_warding"
+      },
+      "body_reconstruction" : {
+        "name" : "Body Reconstruction",
+        "attribute" : "toughness",
+        "type" : "undead",
+        "requirements" : { "basic" : 6, "mastery" : 9 },
+        "cost" : { "basic" : 2,"mastery" : 4 },
+        "description" : {
+          "basic" : "Increases Critical Resistance by 10%.",
+          "mastery" : "Critical Resistance increases to 20%."
+        },
+        "icon" : "possessed_tzeentch_warding"
+      },
+      "embedded_wyrdstones" : {
+        "name" : "Embedded Wyrdstones",
+        "attribute" : "intelligence",
+        "type" : "undead",
+        "requirements" : { "basic" : 6, "mastery" : 9 },
+        "cost" : { "basic" : 2,"mastery" : 4 },
+        "description" : {
+          "basic" : "Increases Wyrdstone Resistance by 10% and grants immunity to a quarter of all detrimental Wyrdstone effects.",
+          "mastery" : "Wyrdstone Resistance increases to 30% and grants immunity to half detrimental Wyrdstone effects."
+        },
+        "icon" : "possessed_tzeentch_warding"
+      },
+      "warp_attunement" : {
+        "name" : "Warp Attunement",
+        "attribute" : "class",
+        "type" : "class",
+        "cost" : { "basic" : 0 },
+        "description" : {
+          "basic" : "After gathering a Wyrdstone, decreases Spellcasting cost of the next spell by 1 OP and Tzeentch's curse chance by 10%. The next action taken must be a spell or the effect is lost.",
+        },
+        "icon" : "possessed_tzeentch_warding"
       }
+      
     }
   },
 

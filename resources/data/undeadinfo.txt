@@ -1,0 +1,111 @@
+
+- Leader: Vampire (Warband Rank 0)
+- Hero: Dreg (Warband Rank 0)
+- Henchmen: Ghoul (Warband Rank 0)
+- Henchmen: Zombie (Warband Rank 0)
+- Hero: Vampire Thrall (Warband Rank 2)
+- Hero: Necromancer (Warband Rank 3)
+- Impressive: Crypt Horror (Warband Rank 5)
+
+
+
+		Agi		Str		Tou		Lea		Int		Ale		WS		BS		Acc		Speed
+Vampire	6 / 15	7 / 18	6 / 15	8 / 15	5 / 15	7 / 16	4 / 15	4 / 12	3 / 9	Fast
+Necromancer	3 / 10	3 / 9	5 / 15	5 / 15	9 / 20	3 / 9	3 / 12	5 / 15	4 / 15	Normal
+Vampire Thrall	5 / 15	5 / 15	5 / 15	6 / 12	4 / 12	5 / 15	4 / 15	3 / 12	3 / 9	Fast
+Dreg	4 / 12	6 / 18	4 / 12	1 / 6	3 / 9	4 / 13	6 / 18	6 / 16	6 / 16	Slow
+Crypt Horror	12 / 20	14 / 20	8 / 16	7 / 15	6 / 12	10 / 18	10 / 20	3 / 3	10 / 16	Fast
+Ghoul	4 / 15	5 / 15	3 / 12	3 / 12	2 / 9	3 / 12	4 / 15	3 / 3	3 / 12	Normal
+Zombie	1 / 9	6 / 16	6 / 16	3 / 3	1 / 12	3 / 15	4 / 16	3 / 3	3 / 15	Very Slow
+
+
+
+
+
+Unique Warband Skills
+- Death Trap (Active) - 3OP
+--- Train Req: 6 Agility/9 Agility
+--- Target: Special
+--- Place a trapped skull at target location that explodes when an enemy approaches within 2.5 meters. Deals 12-24 damage to everyone within 5m and applies a debuff that reduces Melee and Ranged Hit Chance by 5%. Usable once per turn. Not Stackable.
+--- Mastery: Damage increases to 24-48 and Hit Chance penalty to 10%.
+
+- Eye See You (Active) - 2OP
+--- Train Req: 6 Agility/9 Agility
+--- Target: Special
+--- Place a trapped skull at target location that triggers when an enemy approaches within 5 meters. Applies a debuff to enemies within 10m that reduces Initiative by 10, All Alone, Fear, and Terror by 5% and renders their location visible. Not Stackable. Usable once per turn.
+--- Mastery: Initiative penalty increases to 20 and All Alone, Fear and Terror penalty to 10%.
+
+- Death Stench (Active) - 3SP
+--- Train Req: 6 Toughness/9 Toughness
+--- Target: Everyone within a 5 meter radius around the user.
+--- Reduces Melee Resistance, Parry and Dodge chances by 5% of everyone within a 5 meter radius around the user. Resistible Poison effect. Undead warriors are immune. Not Stackable.
+--- Mastery: Melee Resistance, Dodge and Parry chance penalty increases to 10%.
+
+- Find the breach (Passive)
+--- Train Req: 6 Weapon Skill/9 Weapon Skill
+--- When another ally is engaged with the same target, increases Armour Absorption bypass by 5%. Not Stackable.
+--- Mastery: Armour Absorption bypass increases to 10%.
+
+- Body Reconstruction (Passive)
+--- Train Req: 6 Toughness/9 Toughness
+--- Increases Critical Resistance by 10%.
+--- Mastery: Critical Resistance increases to 20%.
+
+- Embedded Wyrdstones (Passive)
+--- Train Req: 6 Intelligence/9 Intelligence
+--- Increases Wyrdstone Resistance by 10% and grants immunity to a quarter of all detrimental Wyrdstone effects.
+--- Mastery: Wyrdstone Resistance increases to 30% and grants immunity to half detrimental Wyrdstone effects.
+
+Stat Allocation
+
+Vampire: 14 Physical, 14 Mental, 17 Martial
+
+Necromancer: 16 Physical, 16 Mental, 13 Martial
+
+Vampire Thrall: 13 Physical, 15 Mental, 17 Martial
+
+Dreg: 16 Physical, 14 Mental, 15 Martial
+
+Crypt Horror: 18 Physical, 17 Mental, 10 Martial
+
+Ghoul: 21 Physical, 14 Mental, 10 Martial
+
+Zombies: 15 Physical, 13 Mental, 17 Martial
+
+
+
+Dreg:
+Initial skills:
+- Humble Servant: Sacrifice 25 wounds. Restores up to 15 wounds and grants a buff that increases Initiative by 15 and Dodge chance by 10% for 2 turns. Only affects Vampires and Vampire Thralls.
+
+Zombie:
+Initial skills:
+- Puppet: The Zombie becomes bound to it's master. Ritual ingredients must be paid for in the form of an upkeep. The Zombie will gain experience and will receive four less skill points than regular Henchmen. Failing to perform the ritual for extended periods weakens the bond, causing the Zombie to decay and be destroyed.
+
+- Rotten Corpse: The Zombie is immune to Open Wound effects and all injuries except Destroyed (Dead), Severed Arm, Severed Leg, Hand Injury, Full Recovery. If it must roll for Injuries at the end of combat, it has a 20% chance to decay and effectively be destroyed. Every rank of the Zombie reduces this chance by 1%.
+
+Vampire:
+Initial Skills:
+- Terror: Enemies who engage or start the turn engaged with the user must perform a Terror test. Failing the test reduces maximum Offense and Strategy Points by 3. The debuff persists until passing a Terror test on turn start. Passing any Terror test will grant immunity to Terror for 2 turns.
+
+Ghoul:
+Initial skills:
+- Disease Carrier: On melee damage, inflicts a random poison debuff from the following: -5 Initiative, OR -3% Critical Resistance, OR -3% Dodge and Parry chance. All debuffs are stackable, last 3 turns, and increase Damage received from the spell Rotten Touch by 3%.
+
+Necromancer:
+- Warp Attunement: After gathering a Wyrdstone, decreases Spellcasting cost of the next spell by 1 OP and Tzeentch's curse chance by 10%. The next action taken must be a spell or the effect is lost.
+
+
+
+
+
+Vampire "agility" : { "min" : 6, "max" : 15 },  "strength" : { "min" : 7, "max" : 18 }, "toughness" : { "min" : 6, "max" : "15 },  "leadership" : { "min" : 8, "max" : 15 }, "intelligence" : { "min" : 5, "max" : 15 }, "alertness" : { "min" : 7, "max", 16 }, "weapon_skill" : { "min" : 4, "max" : 15 }, "ballistic_skill" : { "min" : 4, "max" : 12 }, "accuracy" : { "min" : 3, "max" : 9 }Fast
+Necromancer "agility" : { "min" : 3, "max" : 10 },  "strength" : { "min" : 3, "max" : 9 }, "toughness" : { "min" : 5, "max" : "15 },  "leadership" : { "min" : 5, "max" : 15 }, "intelligence" : { "min" : 9, "max" : 20 }, "alertness" : { "min" : 3, "max", 9 }, "weapon_skill" : { "min" : 3, "max" : 12 }, "ballistic_skill" : { "min" : 5, "max" : 15 }, "accuracy" : { "min" : 4, "max" : 15 }Normal
+Vampire Thrall "agility" : { "min" : 5, "max" : 15 },  "strength" : { "min" : 5, "max" : 15 }, "toughness" : { "min" : 5, "max" : "15 },  "leadership" : { "min" : 6, "max" : 12 }, "intelligence" : { "min" : 4, "max" : 12 }, "alertness" : { "min" : 5, "max", 15 }, "weapon_skill" : { "min" : 4, "max" : 15 }, "ballistic_skill" : { "min" : 3, "max" : 12 }, "accuracy" : { "min" : 3, "max" : 9 }Fast
+Dreg "agility" : { "min" : 4, "max" : 12 },  "strength" : { "min" : 6, "max" : 18 }, "toughness" : { "min" : 4, "max" : "12 },  "leadership" : { "min" : 1, "max" : 6 }, "intelligence" : { "min" : 3, "max" : 9 }, "alertness" : { "min" : 4, "max", 13 }, "weapon_skill" : { "min" : 6, "max" : 18 }, "ballistic_skill" : { "min" : 6, "max" : 16 }, "accuracy" : { "min" : 6, "max" : 16 }Slow
+Crypt Horror "agility" : { "min" : 12, "max" : 20 },  "strength" : { "min" : 14, "max" : 20 }, "toughness" : { "min" : 8, "max" : "16 },  "leadership" : { "min" : 7, "max" : 15 }, "intelligence" : { "min" : 6, "max" : 12 }, "alertness" : { "min" : 10, "max", 18 }, "weapon_skill" : { "min" : 10, "max" : 20 }, "ballistic_skill" : { "min" : 3, "max" : 3 }, "accuracy" : { "min" : 10, "max" : 16 }Fast
+Ghoul "agility" : { "min" : 4, "max" : 15 },  "strength" : { "min" : 5, "max" : 15 }, "toughness" : { "min" : 3, "max" : "12 },  "leadership" : { "min" : 3, "max" : 12 }, "intelligence" : { "min" : 2, "max" : 9 }, "alertness" : { "min" : 3, "max", 12 }, "weapon_skill" : { "min" : 4, "max" : 15 }, "ballistic_skill" : { "min" : 3, "max" : 3 }, "accuracy" : { "min" : 3, "max" : 12 }Normal
+Zombie "agility" : { "min" : 1, "max" : 9 },  "strength" : { "min" : 6, "max" : 16 }, "toughness" : { "min" : 6, "max" : "16 },  "leadership" : { "min" : 3, "max" : 3 }, "intelligence" : { "min" : 1, "max" : 12 }, "alertness" : { "min" : 3, "max", 15 }, "weapon_skill" : { "min" : 4, "max" : 16 }, "ballistic_skill" : { "min" : 3, "max" : 3 }, "accuracy" : { "min" : 3, "max" : 15 }Very Slow
+
+
+Vampire "agility" : { "min" : 6, "max" : 15 },  "strength" : { "min" : 7, "max" : 18 }, "toughness" : { "min" : 6, "max" : "15 },  "leadership" : { "min" : 8, "max" : 15 }, "intelligence" : { "min" : 5, "max" : 15 }, "alertness" : { "min" : 7, "max", 16 }, "weapon_skill" : { "min" : 4, "max" : 15 }, "ballistic_skill" : { "min" : 4, "max" : 12 }, "accuracy" : { "min" : 3, "max" : 9 }Fast

@@ -16,11 +16,43 @@ body {
 	font-weight: bold;
 	padding: 5px 10px;
 }
+
+.desccell  {
+    text-align: left;
+}
+
+
+.skillselected {
+	font-weight: bold;
+}
+
+.skillpointsover {
+	background-color: #800000;
+}
+
+
+.attributepointsover {
+	background-color: #800000;
+}
+
+.impossible
+{
+	background-color: red;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.notmet 
+{
+	background-color: yellow;
+<!--	color: #cc7409; -->
+	font-weight: bold;
+}
 </style>
 
 
 </head>
-<body onload="loadUnitTypeSelectOptions()">
+<body onload="loadUnitTypeSelectOptions()" bgcolor='#C0C0C0'>
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="data/data.json.inline"></script>
@@ -128,6 +160,7 @@ body {
 				<th>Skill</th>
 				<th>Attribute</th>
 				<th>Requirement</th>
+				<th>Level</th>
 				<th>Point Cost</th>
 				<th>Offense</th>
 				<th>Strategy</th>
@@ -135,8 +168,7 @@ body {
 			</tr>
 		</thead>
 		<tfoot>
-		<!--  onchange='addNewActiveSkill(this.options[this.selectedIndex].value)'-->
-			<tr><td><select id="new_activeskillselector" onchange='addNewActiveSkill(this.options[this.selectedIndex].value)'></select></td></tr>
+			<tr><td colspan=9 align='left'><select id="new_activeskillselector" onchange='addNewActiveSkill(this.options[this.selectedIndex].value)'></select></td></tr>
 		</tfoot>
 		<tbody>
 		</tbody>	
@@ -145,17 +177,17 @@ body {
 	<table id="passive_skills">
 		<thead>
 			<tr>
-				<th>&nbsp;</th>
 				<th>Action</th>
 				<th>Skill</th>
 				<th>Attribute</th>
 				<th>Requirement</th>
+				<th>Level</th>
 				<th>Point Cost</th>
 				<th>Description</th>
 			</tr>
 		</thead>
 		<tfoot>
-			<tr><td><select id="new_passiveskillselector"></select></td></tr>
+			<tr><td colspan=7 align='left'><select id="new_passiveskillselector" onchange='addNewPassiveSkill(this.options[this.selectedIndex].value)'></select></td></tr>
 		</tfoot>
 		<tbody>
 		</tbody>	
