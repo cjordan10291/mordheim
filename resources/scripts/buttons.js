@@ -15,8 +15,9 @@ var attributeTypeLookup= {
 
 //var passiveSkills = {};
 
-var currentBuild = { activeSkills: {}, passiveSkills: {}, attributes: {} };
+var timers = {};
 
+var currentBuild = { activeSkills: {}, passiveSkills: {}, attributes: {} };
 
 
 function buildContainsSkill(skillName)
@@ -452,7 +453,7 @@ function myAddOnclick(elem) {
 	else 
 	{
 		$("#" + target).val( parseInt( $("#" + target).val()) + 1);
-		currentBuild.attribute[basename]=currentBuild.attribute[basename]+1;
+		currentBuild.attributes[basename]=currentBuild.attributes[basename]+1;
 		updateGroup(group);
 		clearValidationMessages();
 		
@@ -466,16 +467,98 @@ function mySubtractOnclick(elem) {
 	if (checkAttributeConstraints(basename,-1))
 	{
 		$("#" + target).val( parseInt( $("#" + target).val()) - 1);
-		currentBuild.attribute[basename]=currentBuild.attribute[basename]-1;
+		currentBuild.attributes[basename]=currentBuild.attributes[basename]-1;
 		clearValidationMessages();
 		updateGroup(attributeTypeLookup[basename]);
+		updateSkillReqs();
 	}
 	else
 	{
 		$("#"+basename+"_attributevalidation").text("Min is " + currentProfile.attributes[basename].min);
+		$timeoutFade(elementId);
 	}
+	
 }
 
+
+function findSkillType(skillName)
+{
+	if (typeof jsonData.skills.active[skillName] === 'undefined')
+	{
+		return 'active';
+	}
+	else if (typeof jsonData.skills.passive[skillName] === 'undefined')
+	{
+		return 'passive';
+	}
+}
+function findSkillAttrRequirement(skillName, skillLevel)
+{
+	var skillType=findSkillType(skillName);
+	if ( (typeof jsonData.skills[skillType][skillName].requirement !== 'undefined'))
+	{
+		
+		return  { 	'attr' : jsonData.skills[skillType][skillName].attribute,
+			'req' : jsonData.skills[skillType][skillName].requirement[skillLevel] 
+		};
+	}
+	return { 'attr' : 'strength', 'req' : 0 };
+}
+
+function setAllSkillReqsMet()
+{
+	$("tr[id$=_row]").each(function(idx, obj){
+		$(obj).removeClass("notmet");
+		$(obj).removeClass("impossible");
+	});
+	
+}
+
+function markSkillRequirementNotMet(skillName, attr, skillReq)
+{
+	if (currentBuild.attributes[attr] < skillReq)
+	{
+	// TODO mark row wiht class.  Below is stub 
+		$("tr[id$=_row]").each(function(idx, obj){
+			$(obj).removeClass("notmet");
+			$(obj).removeClass("impossible");
+		});
+	}
+	
+}
+
+function updateSkillReqs()
+{
+	setAllSkillReqsMet();
+	$.each(["active","passive"], function(idx2,obj2)
+	{
+		$.each(currentBuild.skills[obj2], function(idx, skillName){
+			let skillLevel=currentBuild.skills[findskillType(skillName)][skillName];
+			let skillReq=findSkillAttrRequirement(skillName, skillLevel);
+			
+			if (currentBuild.attributes[skillReq.attr] < skillReq.req)
+			{
+				markSkillRequirementNotMet(skillName, skillReq.attr, skillReq.req);
+			}
+		});
+	});
+}
+
+
+
+function timeOutFade(elementId)
+{
+	$("#"+elementId).stop(true, true).show();
+	
+	if ( (typeof timers[elementId] !== "undefined"))
+	{
+		clearTimeout(timers[elementId]);
+	}
+		
+	timers[elementId] = setTimeout(function() {
+		  $("#"+elementId).fadeOut(2000);
+		}, 5000);	
+}
 
 function unitTypeChanged(element)  {
 	loadUnitType(element.value);

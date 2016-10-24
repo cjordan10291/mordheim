@@ -2622,6 +2622,194 @@ var jsonData={  "profiles": {
       "skills" : [
         "warp_attunement"
       ],
+      "spells" : [
+        "necro_starting_spell"
+      ],
+      "restrictions" : {
+        "spells" : [
+          "undead"
+        ],
+        "skills" : [
+          "arcane_caster",
+          "born_leader",
+          "undead"
+        ],
+        "equipment" : [ "dagger", "flail", "hammer", "mace", "sigmarite_warhammer", "great_flail", "great_hammer", "cloth", "light", "heavy", "shield", "pendant", "amulet", "helmet" ]
+      },
+      "icon" : "sis_sigmarite_matriarch"
+    },
+    "vampire_thrall" : {
+      "type" : "hero",
+      "rating" : 116, "wounds" : 110,
+      "skillpoints" : 30,
+      "spellpoints" : 0,
+      "attributepoints" : {
+        "physical" : 13,
+        "mental" : 15,
+        "martial" : 17
+      },
+      "attributes" : {
+      	 "strength" : { "min" : 5, "max" : 15 }, 
+      	 "agility" : { "min" : 5, "max" : 15 },  
+      	 "toughness" : { "min" : 5, "max" : 15 },  
+      	 "leadership" : { "min" : 6, "max" : 12 }, 
+      	 "intelligence" : { "min" : 4, "max" : 12 }, 
+      	 "alertness" : { "min" : 5, "max" : 15 }, 
+      	 "weapon_skill" : { "min" : 4, "max" : 15 }, 
+      	 "ballistic_skill" : { "min" : 3, "max" : 12 }, 
+      	 "accuracy" : { "min" : 3, "max" : 9 }
+      },
+      "resistances" : { "poison" : 20, "melee" : 10, "critical_hit" : 5, "wyrdstone" : 25, "magic" : 8, "ranged" : 11, "stun" : 16, "trap" : 0 },
+      "other" : {
+        "movement" : 7
+      },
+      "skills" : [
+        "terror"
+      ],
+      "restrictions" : {
+        "skills" : [
+          "undead"
+        ],
+        "equipment" : [ "dagger", "flail", "hammer", "mace", "sigmarite_warhammer", "great_flail", "great_hammer", "cloth", "light", "heavy", "shield", "pendant", "amulet", "helmet" ]
+      },
+      "icon" : "sis_sigmarite_matriarch"
+    },
+    "dreg" : {
+      "type" : "henchman",
+      "rating" : 116, "wounds" : 110,
+      "skillpoints" : 14,
+      "spellpoints" : 0,
+      "attributepoints" : {
+        "physical" : 16,
+        "mental" : 14,
+        "martial" : 15
+      },
+      "attributes" : {
+      	"strength" : { "min" : 6, "max" : 18 }, 
+      	"agility" : { "min" : 4, "max" : 12 },  
+      	"toughness" : { "min" : 4, "max" : 12 },  
+      	"leadership" : { "min" : 1, "max" : 6 }, 
+      	"intelligence" : { "min" : 3, "max" : 9 }, 
+      	"alertness" : { "min" : 4, "max" : 13 }, 
+      	"weapon_skill" : { "min" : 6, "max" : 18 }, 
+      	"ballistic_skill" : { "min" : 6, "max" : 16 }, 
+      	"accuracy" : { "min" : 6, "max" : 16 }
+      },
+      "resistances" : { "poison" : 20, "melee" : 10, "critical_hit" : 5, "wyrdstone" : 25, "magic" : 8, "ranged" : 11, "stun" : 16, "trap" : 0 },
+      "other" : {
+        "movement" : 7
+      },
+      "skills" : [
+        "terror"
+      ],
+      "restrictions" : {
+        "skills" : [
+          "undead"
+        ],
+        "equipment" : [ "dagger", "flail", "hammer", "mace", "sigmarite_warhammer", "great_flail", "great_hammer", "cloth", "light", "heavy", "shield", "pendant", "amulet", "helmet" ]
+      },
+      "icon" : "sis_sigmarite_matriarch"
+    },
+    "crypt_horror" : {
+      "type" : "impressive",
+      "rating" : 116, "wounds" : 110,
+      "skillpoints" : 30,
+      "spellpoints" : 0,
+      "attributepoints" : {
+        "physical" : 18,
+        "mental" : 17,
+        "martial" : 10
+      },
+      "attributes" : {
+      	"strength" : { "min" : 14, "max" : 20 }, 
+      	"agility" : { "min" : 12, "max" : 20 },  
+      	"toughness" : { "min" : 8, "max" : 16 },  
+      	"leadership" : { "min" : 7, "max" : 15 }, 
+      	"intelligence" : { "min" : 6, "max" : 12 }, 
+      	"alertness" : { "min" : 10, "max" : 18 }, 
+      	"weapon_skill" : { "min" : 10, "max" : 20 }, 
+      	"ballistic_skill" : { "min" : 3, "max" : 3 }, 
+      	"accuracy" : { "min" : 10, "max" : 16 }
+      },
+      "resistances" : { "poison" : 20, "melee" : 10, "critical_hit" : 5, "wyrdstone" : 25, "magic" : 8, "ranged" : 11, "stun" : 16, "trap" : 0 },
+      "other" : {
+        "movement" : 7
+      },
+      "skills" : [
+        "terror"
+      ],
+      "restrictions" : {
+        "skills" : [
+          "undead"
+        ],
+        "equipment" : [ "dagger", "flail", "hammer", "mace", "sigmarite_warhammer", "great_flail", "great_hammer", "cloth", "light", "heavy", "shield", "pendant", "amulet", "helmet" ]
+      },
+      "icon" : "sis_sigmarite_matriarch"
+    },
+    "ghoul" : {
+      "type" : "henchman",
+      "rating" : 116, "wounds" : 110,
+      "skillpoints" : 14,
+      "spellpoints" : 0,
+      "attributepoints" : {
+        "physical" : 21,
+        "mental" : 14,
+        "martial" : 10
+      },
+      "attributes" : {
+      	"strength" : { "min" : 5, "max" : 15 }, 
+      	"agility" : { "min" : 4, "max" : 15 },  
+      	"toughness" : { "min" : 3, "max" : 12 },  
+      	"leadership" : { "min" : 3, "max" : 12 }, 
+      	"intelligence" : { "min" : 2, "max" : 9 }, 
+      	"alertness" : { "min" : 3, "max" : 12 }, 
+      	"weapon_skill" : { "min" : 4, "max" : 15 }, 
+      	"ballistic_skill" : { "min" : 3, "max" : 3 }, 
+      	"accuracy" : { "min" : 3, "max" : 12 }
+      },
+      "resistances" : { "poison" : 20, "melee" : 10, "critical_hit" : 5, "wyrdstone" : 25, "magic" : 8, "ranged" : 11, "stun" : 16, "trap" : 0 },
+      "other" : {
+        "movement" : 7
+      },
+      "skills" : [
+        "terror"
+      ],
+      "restrictions" : {
+        "skills" : [
+          "undead"
+        ],
+        "equipment" : [ "dagger", "flail", "hammer", "mace", "sigmarite_warhammer", "great_flail", "great_hammer", "cloth", "light", "heavy", "shield", "pendant", "amulet", "helmet" ]
+      },
+      "icon" : "sis_sigmarite_matriarch"
+    },
+    "zombie" : {
+      "type" : "henchman",
+      "rating" : 116, "wounds" : 110,
+      "skillpoints" : 10,
+      "spellpoints" : 0,
+      "attributepoints" : {
+        "physical" : 21,
+        "mental" : 14,
+        "martial" : 10
+      },
+      "attributes" : {
+      	"strength" : { "min" : 6, "max" : 16 }, 
+      	"agility" : { "min" : 1, "max" : 9 },  
+      	"toughness" : { "min" : 6, "max" : 16 },  
+      	"leadership" : { "min" : 3, "max" : 3 }, 
+      	"intelligence" : { "min" : 1, "max" : 12 }, 
+      	"alertness" : { "min" : 3, "max" : 15 }, 
+      	"weapon_skill" : { "min" : 4, "max" : 16 }, 
+      	"ballistic_skill" : { "min" : 3, "max" : 3 }, 
+      	"accuracy" : { "min" : 3, "max" : 15 }
+      },
+      "resistances" : { "poison" : 20, "melee" : 10, "critical_hit" : 5, "wyrdstone" : 25, "magic" : 8, "ranged" : 11, "stun" : 16, "trap" : 0 },
+      "other" : {
+        "movement" : 7
+      },
+      "skills" : [
+        "terror"
+      ],
       "restrictions" : {
         "skills" : [
           "undead"
