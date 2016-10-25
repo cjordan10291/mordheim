@@ -456,7 +456,7 @@ function myAddOnclick(elem) {
 		currentBuild.attributes[basename]=currentBuild.attributes[basename]+1;
 		updateGroup(group);
 		clearValidationMessages();
-		
+		updateSkillReqs();
 	}
 		
 }
@@ -483,11 +483,11 @@ function mySubtractOnclick(elem) {
 
 function findSkillType(skillName)
 {
-	if (typeof jsonData.skills.active[skillName] === 'undefined')
+	if (typeof jsonData.skills.active[skillName] !== 'undefined')
 	{
 		return 'active';
 	}
-	else if (typeof jsonData.skills.passive[skillName] === 'undefined')
+	else if (typeof jsonData.skills.passive[skillName] !== 'undefined')
 	{
 		return 'passive';
 	}
@@ -495,11 +495,11 @@ function findSkillType(skillName)
 function findSkillAttrRequirement(skillName, skillLevel)
 {
 	var skillType=findSkillType(skillName);
-	if ( (typeof jsonData.skills[skillType][skillName].requirement !== 'undefined'))
+	if ( (typeof jsonData.skills[skillType][skillName].requirements !== 'undefined'))
 	{
 		
 		return  { 	'attr' : jsonData.skills[skillType][skillName].attribute,
-			'req' : jsonData.skills[skillType][skillName].requirement[skillLevel] 
+			'req' : jsonData.skills[skillType][skillName].requirements[skillLevel] 
 		};
 	}
 	return { 'attr' : 'strength', 'req' : 0 };
@@ -516,15 +516,17 @@ function setAllSkillReqsMet()
 
 function markSkillRequirementNotMet(skillName, attr, skillReq)
 {
+	var elem=$("tr#"+skillName+"_row");
+
 	if (currentBuild.attributes[attr] < skillReq)
 	{
-	// TODO mark row wiht class.  Below is stub 
-		$("tr[id$=_row]").each(function(idx, obj){
-			$(obj).removeClass("notmet");
-			$(obj).removeClass("impossible");
-		});
+		elem.addClass("notmet");
+		
+		if (currentProfile.attributes[attr].max < skillReq)
+		{
+			elem.addClass("impossible");
+		}
 	}
-	
 }
 
 function updateSkillReqs()
@@ -532,14 +534,10 @@ function updateSkillReqs()
 	setAllSkillReqsMet();
 	$.each(["active","passive"], function(idx2,obj2)
 	{
-		$.each(currentBuild.skills[obj2], function(idx, skillName){
-			let skillLevel=currentBuild.skills[findskillType(skillName)][skillName];
+		$.each(currentBuild[obj2+"Skills"], function(skillName, skillLevel){
 			let skillReq=findSkillAttrRequirement(skillName, skillLevel);
 			
-			if (currentBuild.attributes[skillReq.attr] < skillReq.req)
-			{
-				markSkillRequirementNotMet(skillName, skillReq.attr, skillReq.req);
-			}
+			markSkillRequirementNotMet(skillName, skillReq.attr, skillReq.req);
 		});
 	});
 }
@@ -600,6 +598,7 @@ function addActiveSkill(skillName, skillLevel)
 	}
 	updateSkillTotals();
 	updateSkillPointTotals();
+	updateSkillReqs();
 }
 
 
@@ -617,6 +616,7 @@ function addPassiveSkill(skillName, skillLevel)
 	}
 	updateSkillTotals();
 	updateSkillPointTotals();
+	updateSkillReqs();
 }
 
 function removeActiveSkill(skillName)
@@ -801,7 +801,7 @@ function changeSkillLevel(skillType)
 		
 		if ( (getTotalUsedSkillPoints() + addedCost ) > currentProfile.skillpoints)
 		{
-			$("#")
+			//TODO pop up some wwarning
 		}
 	
 	}
@@ -826,7 +826,7 @@ function changeSkillLevel(skillType)
 		$("tr#" + skillNameString +"_row .mastery_description").css("font-weight","bold").css("font-size","100%");
 	}
 	updateSkillLevelDisplays(skillNameString, skillType);
-	
+	updateSkillReqs();
 	
 }
 
