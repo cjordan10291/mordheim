@@ -626,6 +626,14 @@ function removeActiveSkill(skillName)
 	delete activeSkill[skillName];
 }
 
+
+function fillBuildAttributes(baseAttributes,build)
+{
+	$.each(baseAttributes, function(idx,obj) {
+			build.attributes[idx]=obj.min;
+	});
+}
+
 function removePassiveSkill(skillName)
 {
 	delete passiveSkill[skillName];
@@ -647,7 +655,8 @@ function loadUnitType(unitType){
 //		$("label#"+ idx + "_max").text(obj.max);
 //		currentBuild.attributes[idx]=obj.min;
 //	});
-	
+	fillBuildAttributes(currentProfile.attributes,currentBuild);
+
 	fillAttributePoints(currentProfile.attributepoints);
 //	$.each(currentProfile.attributepoints, function (idx, obj) {
 //		$("#" + idx + "_points").empty().text(obj);
@@ -700,16 +709,7 @@ function loadUnitType(unitType){
 function addNewActiveSkill(newSkill)
 {
 	addActiveSkill(newSkill, "basic");
-	$.each($("select[id$=_activeskillselector]"), function (idx, obj){
-		if ("new_activeskillselector" === obj.id)
-		{
-			setActiveSkillSelectorOptions(obj.id);
-		}
-		else 
-		{
-			setActiveSkillSelectorOptions(obj.id, obj.value );
-		}
-	});
+	setActiveSkillSelectorOptions("new_activeskillselector",null);
 }
 
 function addNewPassiveSkill(newSkill)
