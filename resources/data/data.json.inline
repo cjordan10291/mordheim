@@ -2664,7 +2664,7 @@ var jsonData={  "profiles": {
         "movement" : 7
       },
       "skills" : [
-        "terror"
+        "fear"
       ],
       "restrictions" : {
         "skills" : [
@@ -2675,9 +2675,9 @@ var jsonData={  "profiles": {
       "icon" : "sis_sigmarite_matriarch"
     },
     "dreg" : {
-      "type" : "henchman",
+      "type" : "hero",
       "rating" : 116, "wounds" : 110,
-      "skillpoints" : 14,
+      "skillpoints" : 30,
       "spellpoints" : 0,
       "attributepoints" : {
         "physical" : 16,
@@ -2700,7 +2700,7 @@ var jsonData={  "profiles": {
         "movement" : 7
       },
       "skills" : [
-        "terror"
+        "humble_servant"
       ],
       "restrictions" : {
         "skills" : [
@@ -2772,7 +2772,7 @@ var jsonData={  "profiles": {
         "movement" : 7
       },
       "skills" : [
-        "terror"
+        "disease_carrier"
       ],
       "restrictions" : {
         "skills" : [
@@ -2790,7 +2790,7 @@ var jsonData={  "profiles": {
       "attributepoints" : {
         "physical" : 21,
         "mental" : 14,
-        "martial" : 10
+        "martial" : 17
       },
       "attributes" : {
       	"strength" : { "min" : 6, "max" : 16 }, 
@@ -2808,7 +2808,8 @@ var jsonData={  "profiles": {
         "movement" : 7
       },
       "skills" : [
-        "terror"
+      	"puppet",
+        "rotten_corpse"
       ],
       "restrictions" : {
         "skills" : [
@@ -4960,6 +4961,26 @@ var jsonData={  "profiles": {
         "info" : { "cost" : { "offense" : 2 }, "range" : "0m",  "target" : "Everyone within a 5 meter radius around the user.",  "duration" : "0 turn", "stackable" : "No" },        
         "icon" : "possessed_touch_of_palsy"      
        },
+       "humble_servant" : {
+        "name" : "Humble Servant",
+        "attribute" : "class",
+        "cost" : {
+          "basic" : 0
+        },
+        "description" : {
+          "basic" : "Sacrifice 25 wounds. Restores up to 15 wounds and grants a buff that increases Initiative by 15 and Dodge chance by 10% for 2 turns. Only affects Vampires and Vampire Thralls."
+        },
+        "info" : {
+          "cost" : {
+            "strategy" : 2
+          },
+          "range" : "15m",
+          "target" : "Single ally",
+          "duration" : "1 turn",
+          "stackable" : "No"
+        },
+        "icon" : "sisters_for_sigmar"
+      }
     },
     "passive" : {
       "blitz" : {
@@ -7044,7 +7065,38 @@ var jsonData={  "profiles": {
           "basic" : "After gathering a Wyrdstone, decreases Spellcasting cost of the next spell by 1 OP and Tzeentch's curse chance by 10%. The next action taken must be a spell or the effect is lost.",
         },
         "icon" : "possessed_tzeentch_warding"
-      }
+      },
+    "disease_carrier" : {
+        "name" : "Disease Carrier",
+        "attribute" : "class",
+        "type" : "class",
+        "cost" : { "basic" : 0 },
+        "description" : {
+          "basic" : "On melee damage, inflicts a random poison debuff from the following: -5 Initiative, OR -3% Critical Resistance, OR -3% Dodge and Parry chance. All debuffs are stackable, last 3 turns, and increase Damage received from the spell Rotten Touch by 3%.",
+        },
+        "icon" : "possessed_tzeentch_warding"
+      },
+    "puppet" : {
+        "name" : "Puppet",
+        "attribute" : "class",
+        "type" : "class",
+        "cost" : { "basic" : 0 },
+        "description" : {
+          "basic" : "The Zombie becomes bound to it's master. Ritual ingredients must be paid for in the form of an upkeep. The Zombie will gain experience and will receive four less skill points than regular Henchmen. Failing to perform the ritual for extended periods weakens the bond, causing the Zombie to decay and be destroyed.",
+        },
+        "icon" : "possessed_tzeentch_warding"
+      },
+    "rotten_corpse" : {
+        "name" : "Rotten Corpse",
+        "attribute" : "class",
+        "type" : "class",
+        "cost" : { "basic" : 0 },
+        "description" : {
+          "basic" : "The Zombie is immune to Open Wound effects and all injuries except Destroyed (Dead), Severed Arm, Severed Leg, Hand Injury, Full Recovery. If it must roll for Injuries at the end of combat, it has a 20% chance to decay and effectively be destroyed. Every rank of the Zombie reduces this chance by 1%.",
+        },
+        "icon" : "possessed_tzeentch_warding"
+      },
+      
       
     }
   },

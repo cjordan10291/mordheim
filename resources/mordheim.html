@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>How to Parse a JSON file using jQuery</title>
+<title>Crappy Mordheim Build Page</title>
 
 <style>
 body {
@@ -35,9 +35,9 @@ body {
 	background-color: #800000;
 }
 
-.impossible
+tr.impossible
 {
-	background-color: red;
+	color: red;
 	font-weight: bold;
 	font-style: italic;
 }
@@ -63,10 +63,15 @@ body {
 -->
 	<table>
 		<tr>
-			<td colspan='9'>Build Name:<input id="build_name" /></td>
+			<td colspan='7'>Build Name:<input id="build_name" /></td>
+			<td><input type="button" value='Save'  onclick="saveBuild()" /></td>
+			<td><input type='button' value='Delete' onclick="deleteBuild()"/></td>
 		</tr>
 		<tr>
-			<td colspan='9'>Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></td>
+			<td colspan='3'>Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></td>
+			<td colspan='3'>Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></td>
+			<td><input type='button' value='Delete' onclick="deleteBuild()"/></td>
+			<td><input type='button' value='Summary' onclick="displaySummary()"/></td>
 		</tr>
 		<tr>
 			<td colspan='3'><label id="physical_groupvalidation">&nbsp;</label></td>
@@ -194,213 +199,9 @@ body {
 	</table>
 
 	<br />
-	<h1>Units Info</h1>
-	<div id="results"></div>
-	<hr />
-	<h1>Skills</h1>
-	<h2>Active</h2>
-	<div id="activeskills"></div>
-	<h2>Passive</h2>
-	<div id="passiveskills"></div>
 
 
-	<script>
-		//        //When DOM loaded we attach click event to button
-		//        $(document).ready(function() {
-		//            //after button is clicked we download the data
-		//            $('.button').click(function(){
-		//                //start ajax request
-		//                $.ajax({
-		//                    url: "file:///d:/tmp/morddata.json",
-		//                    //force to handle it as text
-		//                    dataType: "text",
-		//					crossdomain: true,
-		//                    success: function(data) {
-		//                        //data downloaded so we call parseJSON function 
-		//                        //and pass downloaded data
-		//                        var json = $.parseJSON(data);
-		//                        //now json variable contains data in json format
-		//                        //let's display a few items
-		//                        //$('#results').html('Plugin name: ' + json.name + '<br />Author: ' + json.author.name);
-		//						$.each(json, function(idx, obj) {
-		//						   $('#results').html(json);
-		//						});
-		//                    }
-		//                });
-		//            });
-		//        });
-		//var json = $.parseJSON(jsonData);
-		//                        //$('#results').html('Plugin name: ' + json.name + '<br />Author: ' + json.author.name);
 
-		$('#results').append("<br/>" + "Unit" //idx 
-				+ ",Type" // + obj.type 
-				+ ",Strength"// + obj.attributes.strength.min
-				+ ",Toughness"// + obj.attributes.toughness.min
-				+ ",Agility"// + obj.attributes.agility.min
-				+ ",Leadership"// + obj.attributes.leadership.min
-				+ ",Intelligence"// + obj.attributes.intelligence.min
-				+ ",Alertness"// + obj.attributes.alertness.min
-				+ ",Weapon Skill"// + obj.attributes.weapon_skill.min
-				+ ",Ballistic Skill"// + obj.attributes.ballistic_skill.min
-				+ ",Accuracy" //+ obj.attributes.accuracy.min
 
-				+ ",Physical" //+ obj.attributepoints.physical
-				+ ",Mental" //+ obj.attributepoints.mental
-				+ ",Martial" //+ obj.attributepoints.martial
-				+ ",Skill Points" //+ obj.skillpoints
-				+ ",Spell Points" //+ obj.spellpoints
-
-				+ ",Max Strength"// + obj.attributes.strength.max
-				+ ",Max Toughness"// + obj.attributes.toughness.max
-				+ ",Max Agility"// + obj.attributes.agility.max
-				+ ",Max Leadership"// + obj.attributes.leadership.max
-				+ ",Max Intelligence"// + obj.attributes.intelligence.max
-				+ ",Max Alertness"// + obj.attributes.alertness.max
-				+ ",Max Weapon Skill"// + obj.attributes.weapon_skill.max
-				+ ",Max Ballistic Skill"// + obj.attributes.ballistic_skill.max
-				+ ",Max Accuracy"//  + obj.attributes.accuracy.max
-
-		);
-		$.each(jsonData.profiles, function(idx, obj) {
-			$('#results').append(
-					"<br/>" + idx
-					//						   + "," + Object.keys(jsonData.profiles)[idx]
-					+ "," + obj.type + "," + obj.attributes.strength.min + ","
-							+ obj.attributes.toughness.min + ","
-							+ obj.attributes.agility.min + ","
-							+ obj.attributes.leadership.min + ","
-							+ obj.attributes.intelligence.min + ","
-							+ obj.attributes.alertness.min + ","
-							+ obj.attributes.weapon_skill.min + ","
-							+ obj.attributes.ballistic_skill.min + ","
-							+ obj.attributes.accuracy.min
-
-							+ "," + obj.attributepoints.physical + ","
-							+ obj.attributepoints.mental + ","
-							+ obj.attributepoints.martial + ","
-							+ obj.skillpoints + "," + obj.spellpoints
-
-							+ "," + obj.attributes.strength.max + ","
-							+ obj.attributes.toughness.max + ","
-							+ obj.attributes.agility.max + ","
-							+ obj.attributes.leadership.max + ","
-							+ obj.attributes.intelligence.max + ","
-							+ obj.attributes.alertness.max + ","
-							+ obj.attributes.weapon_skill.max + ","
-							+ obj.attributes.ballistic_skill.max + ","
-							+ obj.attributes.accuracy.max);
-		});
-
-		//						var countTxt = '{ "data": [   { "val": 1 },\
-		//						     { "val": 2 },\
-		//						     { "val": 3 }\
-		//						]    }';
-
-		//						var count = $.parseJSON(countTxt);
-		//						var count = { one: 1, two: 2, three: 3, four: 4 };
-
-		//						$.each(count, function(idx, obj)	{
-		//						   //$('#results').html(obj);
-		//						   $('#results').append(obj + " ");
-		//						});
-
-		//$('#results').html("<h1>Hi</h1>");
-		//				$('#activeskills').append("Not working");
-
-		$('#activeskills').append(
-				"<br/>key" + ",Skill"// + obj.name
-						+ ",Type"// + obj.type
-						+ ",Attribute"// + obj.attribute
-						+ ",Basic Requirement" + ",Mastery Requirement"
-						+ ",Basic Cost" + ",Mastery Cost" + ",Offensive Points"
-						+ ",Strategy Points" + ",Basic Description"
-						+ ",Mastery Description");
-
-		$
-				.each(
-						jsonData.skills.active,
-						function(idx, obj) {
-							$('#activeskills')
-									.append(
-											"<br/>"
-													+ idx
-													+ ","
-													+ obj.name
-													+ ","
-													+ obj.type
-													+ ","
-													+ obj.attribute
-													+ ","
-													+ (((typeof obj.requirements === "undefined") || (typeof obj.requirements.basic === "undefined")) ? 0
-															: obj.requirements.basic)
-													+ ","
-													+ (((typeof obj.requirements === "undefined") || (typeof obj.requirements.mastery === "undefined")) ? 0
-															: obj.requirements.mastery)
-													//			+ "," + obj.requirements.mastery
-													+ ","
-													+ obj.cost.basic
-													+ ","
-													+ obj.cost.mastery
-													//			+ "," + obj.info.cost.offense?obj.info.cost.offense:0
-													//			+ "," + obj.info.cost.strategy?obj.info.cost.strategy:0
-													+ ","
-													+ ((typeof obj.info.cost.offense === "undefined") ? 0
-															: obj.info.cost.offense)
-													+ ","
-													+ ((typeof obj.info.cost.strategy === "undefined") ? 0
-															: obj.info.cost.strategy)
-													//			+ "," + obj.info.cost.offense
-													//			+ "," + obj.info.cost.strategy
-													+ ",\""
-													+ obj.description.basic
-													+ "\"" + ",\""
-													+ obj.description.mastery
-													+ "\""
-
-									);
-							//			$('#activeskills').append("<hr/>");
-
-						});
-
-		$('#passiveskills').append(
-				"<br/>key" + ",Skill"// + obj.name
-						+ ",Type"// + obj.type
-						+ ",Attribute"// + obj.attribute
-						+ ",Basic Requirement" + ",Mastery Requirement"
-						+ ",Basic Cost" + ",Mastery Cost" + ",Offensive Points"
-						+ ",Strategy Points" + ",Basic Description"
-						+ ",Mastery Description");
-
-		$
-				.each(
-						jsonData.skills.passive,
-						function(idx, obj) {
-							$('#passiveskills')
-									.append(
-											"<br/>"
-													+ idx
-													+ ","
-													+ obj.name
-													+ ","
-													+ obj.type
-													+ ","
-													+ obj.attribute
-													+ ","
-													+ (((typeof obj.requirements === "undefined") || (typeof obj.requirements.basic === "undefined")) ? 0
-															: obj.requirements.basic)
-													+ ","
-													+ (((typeof obj.requirements === "undefined") || (typeof obj.requirements.mastery === "undefined")) ? 0
-															: obj.requirements.mastery)
-													+ "," + obj.cost.basic
-													+ "," + obj.cost.mastery
-													+ "," + 0 // (( typeof obj.info.cost.offense === "undefined" ) ? 0 : obj.info.cost.offense )
-													+ "," + 0 //( ( typeof obj.info.cost.strategy === "undefined" ) ? 0 : obj.info.cost.strategy )
-													+ ",\""
-													+ obj.description.basic
-													+ "\"" + ",\""
-													+ obj.description.mastery
-													+ "\"");
-						});
-	</script>
 </body>
 </html>

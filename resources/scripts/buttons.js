@@ -159,12 +159,14 @@ function getTotalUsedSkillPoints()
 	
 }
 
-function generateRemovableActiveSkillTableRow(skillName, skillLevel)
+function generateRemovableActiveSkillTableRow(skillName, skillLevel,unremovable=false)
 {
 	return	"<tr " +generateIdTag(skillName, "_row") + ">"+
 	 "<td "
 	       +generateIdTag(skillName, "_remove") + ">" +
-	       "<button type='button' " + generateIdTag(skillName,"_removebutton") +">Remove</button></td>"
+	       (unremovable ? "" 
+	    		   :   "<button type='button' " + generateIdTag(skillName,"_removebutton") +">Remove</button></td>"
+	       )
 	  	 + "<td " + generateIdTag(skillName, "_skillname") + " >" + removeUnderlines(skillName) + "</td>"
 	  	 + "<td " + generateIdTag(skillName, "_attrib") + " >" + jsonData.skills.active[skillName].attribute + "</td>"
 	+ "<td " + generateIdTag(skillName, "_requirement") + " >"+ jsonData.skills.active[skillName].requirements[skillLevel] + "</td>"
@@ -245,9 +247,9 @@ function deletePassiveSkillEvent()
 	deleteSkill(findBase(this.id), 'passive');
 }
 
-function addRemoveableActiveSkillRow(skillName) {
+function addRemoveableActiveSkillRow(skillName,unremovable=false) {
 	$("table#active_skills tbody")
-			.append(generateRemovableActiveSkillTableRow(skillName, "basic"));
+			.append(generateRemovableActiveSkillTableRow(skillName, "basic",unremovable));
 	$("#"+skillName+"_removebutton").bind("click", deleteActiveSkillEvent);
 	setActiveSkillSelectorOptions( skillName+ "_activeskillselector", skillName);
 	
@@ -584,7 +586,7 @@ function addSkill(skillName, skillLevel, skillTypeString)
 }
 
 
-function addActiveSkill(skillName, skillLevel)
+function addActiveSkill(skillName, skillLevel,unremovable=false)
 {
 	var rowToAdd="";
 	currentBuild.activeSkills[skillName]= skillLevel;
@@ -594,7 +596,7 @@ function addActiveSkill(skillName, skillLevel)
 	}
 	else
 	{
-		addRemoveableActiveSkillRow(skillName);
+		addRemoveableActiveSkillRow(skillName,unremovable);
 	}
 	updateSkillTotals();
 	updateSkillPointTotals();
@@ -636,25 +638,25 @@ function loadUnitType(unitType){
 //	alert(element.value);
 	currentProfile=jsonData.profiles[unitType];
 	
-	currentBuild = { activeSkills: {}, passiveSkills: {}, attributes: {} };
+	currentBuild = { activeSkills: {}, passiveSkills: {}, attributes: {}, currentProfile: currentProfile };
 	
-	$.each(currentProfile.attributes, function(idx,obj) {
-//		alert(idx +"_value " + obj.min);
-		$("input#"+ idx + "_value").val(obj.min);
-		$("label#"+ idx + "_min").text(obj.min);
-		$("label#"+ idx + "_max").text(obj.max);
-		currentBuild.attributes[idx]=obj.min;
-	});
+	fillAttributeElements(currentProfile.attributes);
+//	$.each(currentProfile.attributes, function(idx,obj) {
+//		$("input#"+ idx + "_value").val(obj.min);
+//		$("label#"+ idx + "_min").text(obj.min);
+//		$("label#"+ idx + "_max").text(obj.max);
+//		currentBuild.attributes[idx]=obj.min;
+//	});
 	
-	$.each(currentProfile.attributepoints, function (idx, obj) {
-//		alert(idx+"_points " + obj );
-		$("#" + idx + "_points").empty().text(obj);
-		$("#max_" + idx + "_points").empty().text(obj);
-	});
+	fillAttributePoints(currentProfile.attributepoints);
+//	$.each(currentProfile.attributepoints, function (idx, obj) {
+//		$("#" + idx + "_points").empty().text(obj);
+//		$("#max_" + idx + "_points").empty().text(obj);
+//	});
 	
-	
-	$("#total_skill_points").text(currentProfile.skillpoints);
-	$("#remaining_skill_points").text(currentProfile.skillpoints);
+	fillSkillPoints(currentProfile.skillpoints,currentProfile.skillpoints);
+//	$("#total_skill_points").text(currentProfile.skillpoints);
+//	$("#remaining_skill_points").text(currentProfile.skillpoints);
 	
 //	activeSkills = {};
 
@@ -672,7 +674,15 @@ function loadUnitType(unitType){
 	
 	$.each(currentProfile.skills, function(idx,obj){
 		if (!(typeof jsonData.skills.active[obj] === "undefined")) {
-		    addActiveSkill(obj, "Intrinsic");
+			
+			if (typeof jsonData.skills.active[obj].cost.mastery === "undefined")
+			{
+				addActiveSkill(obj, "Intrinsic");
+			}
+			else
+			{
+				addActiveSkill(obj,"basic",unremovable=true);
+			}
 		}
 		else
 		{	if (!(typeof jsonData.skills.passive[obj] === "undefined")) 
@@ -735,6 +745,12 @@ function loadUnitTypeSelectOptions() {
 				                         .html(removeUnderlines(idx))
 				                    );
 	});
+	
+	
+	
+	loadSavedBuildsSelectOptions();
+	
+	
 	loadUnitType("sigmarite_matriarch");
 	
 	
@@ -749,6 +765,85 @@ function loadUnitTypeSelectOptions() {
 //	$.each($("input.physical"), function(idx, obj) {
 //		alert(obj.id + " " + obj.className);
 //	});
+	
+}
+
+
+function loadSavedBuildsSelectOptions()
+{
+
+	var savedBuilds=loadSavedBuilds();
+
+	var elem=$('select#saved_builds');
+	elem.children().remove();
+
+	if ( (typeof savedBuilds === 'undefined' ) || Object.keys(savedBuilds).length === 0)
+	{
+		$('select#saved_builds').append($("<option>")
+					.val(0)
+					.html("No saved builds"));
+	}
+	else
+	{
+		elem
+		.append($("<option></option>")
+				.attr("value",0)
+				.text("Select Saved Build"));
+
+		$.each(savedBuilds, function(idx, obj) {
+			$('select#saved_builds').append( $("<option>")
+					.val(idx)
+					.html(removeUnderlines(idx))
+			);
+		});
+	}
+}
+
+
+function fillAttributeElements(attributes)
+{
+	$.each(attributes, function(idx,obj) {
+//		alert(idx +"_value " + obj.min);
+		$("input#"+ idx + "_value").val(obj.min);
+		$("label#"+ idx + "_min").text(obj.min);
+		$("label#"+ idx + "_max").text(obj.max);
+	});
+}
+
+
+function fillAttributePoints(attributePoints)
+{
+	$.each(attributePoints, function (idx, obj) {
+		$("#" + idx + "_points").empty().text(obj);
+		$("#max_" + idx + "_points").empty().text(obj);
+	});
+}
+
+
+function fillSkillPoints(remaining, max)
+{
+	$("#total_skill_points").text(max);
+	$("#remaining_skill_points").text(remaining);
+}
+
+
+function loadBuild(element)
+{
+	var builds = loadSavedBuilds();
+	
+	if (typeof builds[element.value] !== 'undefined')
+	{
+		loadUnitType(builds[element.value].unit_type);
+
+		currentBuild=builds[element.value];
+		currentProfile=currentBuild.profile;
+		$("#unit_type").val(currentBuild.unit_type).prop('selected', true);
+		$("#build_name").text(element.value);		
+//		recalculateALotOfShit();
+	}
+	
+	
+	
 	
 }
 
@@ -831,38 +926,29 @@ function changeSkillLevel(skillType)
 }
 
 
+function loadSavedBuilds()
+{
+	var buildsString = localStorage.getItem("builds");
+	var builds={};
+	if (typeof buildsString !== 'undefined' && null !== buildsString)
+	{
+		builds = JSON.parse(buildsString);
+	}
+	return builds;
+}
+
 function saveBuild()
 {
+	var builds=loadSavedBuilds();
 	
+	var buildName = $("#build_name").val();
+	currentBuild.currentProfile=currentProfile;
+	currentBuild.unit_type=$("#unit_type").val();
+	builds[buildName]=currentBuild;
+	localStorage.setItem("builds",JSON.stringify(builds));
 	
 }
 
-function createCookie(name,value,days) {
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime()+(days*24*60*60*1000));
-    var expires = "; expires="+date.toGMTString();
-  }
-  else 
-  {
-	  var expires = "";
-  }
-  document.cookie = name+"="+value+expires+"; path=/";
-}
 
-function readCookie(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(';');
-  for(var i=0;i < ca.length;i++) {
-    var c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  }
-  return null;
-}
 
-function eraseCookie(name) 
-{
-  createCookie(name,"",-1);
-}
 
