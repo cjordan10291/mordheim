@@ -647,25 +647,29 @@ function loadUnitType(unitType){
 	currentProfile=jsonData.profiles[unitType];
 	
 	currentBuild = { activeSkills: {}, passiveSkills: {}, attributes: {}, currentProfile: currentProfile };
-	
-	fillAttributeElements(currentProfile.attributes);
-//	$.each(currentProfile.attributes, function(idx,obj) {
+	loadProfileIntoBuild(currentProfile,currentBuild);
+}
+
+function loadProfileIntoBuild(profile,build)
+{
+	fillAttributeElements(profile.attributes);
+//	$.each(profile.attributes, function(idx,obj) {
 //		$("input#"+ idx + "_value").val(obj.min);
 //		$("label#"+ idx + "_min").text(obj.min);
 //		$("label#"+ idx + "_max").text(obj.max);
-//		currentBuild.attributes[idx]=obj.min;
+//		build.attributes[idx]=obj.min;
 //	});
-	fillBuildAttributes(currentProfile.attributes,currentBuild);
+	fillBuildAttributes(profile.attributes,build);
 
-	fillAttributePoints(currentProfile.attributepoints);
-//	$.each(currentProfile.attributepoints, function (idx, obj) {
+	fillAttributePoints(profile.attributepoints);
+//	$.each(profile.attributepoints, function (idx, obj) {
 //		$("#" + idx + "_points").empty().text(obj);
 //		$("#max_" + idx + "_points").empty().text(obj);
 //	});
 	
-	fillSkillPoints(currentProfile.skillpoints,currentProfile.skillpoints);
-//	$("#total_skill_points").text(currentProfile.skillpoints);
-//	$("#remaining_skill_points").text(currentProfile.skillpoints);
+	fillSkillPoints(profile.skillpoints,profile.skillpoints);
+//	$("#total_skill_points").text(profile.skillpoints);
+//	$("#remaining_skill_points").text(profile.skillpoints);
 	
 //	activeSkills = {};
 
@@ -681,7 +685,7 @@ function loadUnitType(unitType){
 	});
 	
 	
-	$.each(currentProfile.skills, function(idx,obj){
+	$.each(profile.skills, function(idx,obj){
 		if (!(typeof jsonData.skills.active[obj] === "undefined")) {
 			
 			if (typeof jsonData.skills.active[obj].cost.mastery === "undefined")
@@ -834,12 +838,12 @@ function loadBuild(element)
 	if (typeof builds[element.value] !== 'undefined')
 	{
 		loadUnitType(builds[element.value].unit_type);
-
 		currentBuild=builds[element.value];
-		currentProfile=currentBuild.profile;
+		currentProfile=currentBuild.currentProfile;
 		$("#unit_type").val(currentBuild.unit_type).prop('selected', true);
-		$("#build_name").text(element.value);		
+		$("#build_name").val(element.value);		
 //		recalculateALotOfShit();
+		loadProfileIntoBuild(currentProfile,currentBuild);
 	}
 	
 	
@@ -942,11 +946,17 @@ function saveBuild()
 	var builds=loadSavedBuilds();
 	
 	var buildName = $("#build_name").val();
+	
+	if ( buildName.trim() === "")
+	{
+		alert("Please enter a build name before saving");
+		return;
+	}
 	currentBuild.currentProfile=currentProfile;
 	currentBuild.unit_type=$("#unit_type").val();
 	builds[buildName]=currentBuild;
 	localStorage.setItem("builds",JSON.stringify(builds));
-	
+	loadSavedBuildsSelectOptions();
 }
 
 
