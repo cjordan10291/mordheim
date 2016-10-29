@@ -815,6 +815,14 @@ function fillAttributeElements(attributes)
 }
 
 
+function fillAttributeCurrentValues(attributes)
+{
+	$.each(attributes, function(idx,obj) {
+//		alert(idx +"_value " + obj.min);
+		$("input#"+ idx + "_value").val(obj);
+	});
+}
+
 function fillAttributePoints(attributePoints)
 {
 	$.each(attributePoints, function (idx, obj) {
@@ -830,6 +838,43 @@ function fillSkillPoints(remaining, max)
 	$("#remaining_skill_points").text(remaining);
 }
 
+function addNonProfileSkills(myBuild, myProfile)
+{
+	$.each(myBuild.activeSkills,function(idx,obj){
+		if(!myProfile.skills.includes(idx) )
+		{
+			addActiveSkill(idx,obj);
+			adjustSkillLevel(idx,obj,'active');
+		}
+	});
+	$.each(myBuild.passiveSkills,function(idx,obj){
+		if(!myProfile.skills.includes(idx) )
+		{
+			addPassiveSkill(idx,obj);
+			adjustSkillLevel(idx,obj,'passive');
+		}
+	});
+
+}
+
+function adjustMasteryLevelsOnSpecialSkills(myBuild,myProfile)
+{
+	
+	$.each(myBuild.activeSkills,function(idx,obj){
+		if (myBuild.activeSkills[idx] !== 'Intrinsic')
+		{
+			adjustSkillLevel(idx,myBuild.activeSkills[idx], 'active');
+		}
+		
+	});
+	
+	$.each(myBuild.passiveSkills,function(idx,obj){
+		if (myBuild.passiveSkills[idx] !== 'Intrinsic')
+		{
+			adjustSkillLevelString(idx,myBuild.passiveSkills[idx], 'passive');
+		}
+	});
+}
 
 function loadBuild(element)
 {
@@ -838,17 +883,26 @@ function loadBuild(element)
 	if (typeof builds[element.value] !== 'undefined')
 	{
 		loadUnitType(builds[element.value].unit_type);
-		currentBuild=builds[element.value];
+		currentBuild=JSON.parse(JSON.stringify(builds[element.value]));
 		currentProfile=currentBuild.currentProfile;
+		
+		var copiedObject = JSON.parse(JSON.stringify(builds[element.value]));
 		$("#unit_type").val(currentBuild.unit_type).prop('selected', true);
 		$("#build_name").val(element.value);		
 //		recalculateALotOfShit();
 		loadProfileIntoBuild(currentProfile,currentBuild);
+		currentBuild=copiedObject;
+		addNonProfileSkills(currentBuild,currentProfile);
+		currentBuild=JSON.parse(JSON.stringify(builds[element.value]));
+		adjustMasteryLevelsOnSpecialSkills(currentBuild,currentProfile);
+		currentBuild=JSON.parse(JSON.stringify(builds[element.value]));
+		setActiveSkillSelectorOptions("new_activeskillselector",null);
+		setPassiveSkillSelectorOptions("new_passiveskillselector",null);
+		fillAttributeCurrentValues(currentBuild.attributes);
+		updateSkillTotals();
+		updateSkillPointTotals();
+		updateSkillReqs();
 	}
-	
-	
-	
-	
 }
 
 
@@ -893,7 +947,6 @@ function changeSkillLevel(skillType)
 	var skillNameString=findBase(this.event.target.id);
 	
 	var skillLevelString=this.event.target.options[this.event.target.selectedIndex].value;
-	
 	if (skillLevelString === "mastery")
 	{
 		var addedCost=jsonData.skills[skillType][skillNameString].cost.mastery;
@@ -902,18 +955,24 @@ function changeSkillLevel(skillType)
 		{
 			//TODO pop up some wwarning
 		}
-	
+		
 	}
+	adjustSkillLevel(skillNameString, skillLevelString, skillType);
+}
+
+function adjustSkillLevel(skillNameString, skillLevelString, skillType)
+{
 	
 	
-	currentBuild[skillType + "Skills"][skillNameString]=skillLevelString;
 	$("tr#" + skillNameString +"_row .basic_description").css("font-weight","bold").css("font-size","100%");
+	currentBuild[skillType + "Skills"][skillNameString]=skillLevelString;
 	
 	if ("intrisic" !== skillLevelString)
 	{
 		$("tr#" + skillNameString +"_row #"+skillNameString + "_requirement").text(
 				jsonData.skills[skillType][skillNameString].requirements[skillLevelString]
 				);
+		$("#" + skillNameString +"_level").val(skillLevelString).prop('selected', true);
 
 	}
 	if ("basic" === skillLevelString)
@@ -924,6 +983,7 @@ function changeSkillLevel(skillType)
 	{
 		$("tr#" + skillNameString +"_row .mastery_description").css("font-weight","bold").css("font-size","100%");
 	}
+	
 	updateSkillLevelDisplays(skillNameString, skillType);
 	updateSkillReqs();
 	
@@ -959,6 +1019,34 @@ function saveBuild()
 	loadSavedBuildsSelectOptions();
 }
 
+function deleteBuild()
+{
+	var builds=loadSavedBuilds();
+	
+	var buildName=$("#build_name").val();
+	
+	if ( buildName.trim() === "")
+	{
+		alert("Please enter a build name before saving");
+		return;
+	}
+	
+	
+	if (typeof builds[buildName] !== 'undefined')
+	{
+		delete builds[buildName];
+		localStorage.setItem("builds",JSON.stringify(builds));
+		loadSavedBuildsSelectOptions();
+		$("#build_name").val("");
+	}
+	
+}
+
+
+function displaySummary()
+{
+	
+}
 
 
 
