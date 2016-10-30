@@ -6,8 +6,8 @@
 
 <style>
 body {
-	text-align: center;
 	font-family: arial;
+	text-align: center;
 }
 
 .button {
@@ -48,6 +48,39 @@ tr.impossible
 <!--	color: #cc7409; -->
 	font-weight: bold;
 }
+
+div#summary {
+    text-align: left;
+}
+
+textarea {
+	display: none;
+}
+
+
+textarea.showme {
+	display: inline;
+}
+
+tr.align_left {
+	text-align: left;
+}
+
+tr.attribute_tr {
+
+	text-align: center;
+}
+
+
+#summary_button_tr {
+	vertical-align: top
+}
+
+input[type=text] {
+    font-size: larger;
+    text-align: center;
+}
+
 </style>
 
 
@@ -63,26 +96,27 @@ tr.impossible
 -->
 	<table>
 		<tr>
-			<td colspan='7'>Build Name:<input id="build_name" /></td>
+			<td colspan='7'>Build Name:<input id="build_name" ></input></td>
 			<td><input type="button" value='Save'  onclick="saveBuild()" /></td>
 			<td><input type='button' value='Delete' onclick="deleteBuild()"/></td>
 		</tr>
-		<tr>
+		<tr id="summary_button_tr">
 			<td colspan='3'>Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></td>
 			<td colspan='3'>Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></td>
 			<td></td>
-			<td><input type='button' value='Summary' onclick="displaySummary()"/></td>
+			<td id="summary_button_td"><input type='button' value='Summary' onclick="displaySummary()"/></td>
+			<td><textarea id="#summary_text" cols='40' rows='20'></textarea></td>
 		</tr>
-		<tr>
+		<tr class="attribute_tr">
 			<td colspan='3'><label id="physical_groupvalidation">&nbsp;</label></td>
 			<td colspan='3'><label id="mental_groupvalidation">&nbsp;</label></td>
 			<td colspan='3'><label id="martial_groupvalidation">&nbsp;</label></td>
 		</tr>
-		<tr><td colspan='3'>Physical Points:<span id="physical_points">0</span> left of <span id="max_physical_points">0</span></td>
+		<tr class="attribute_tr"><td colspan='3'>Physical Points:<span id="physical_points">0</span> left of <span id="max_physical_points">0</span></td>
 			<td colspan='3'>Mental Points:<span id="mental_points">0</span> left of <span id="max_mental_points">0</span></td>
 			<td colspan='3'>Martial Points:<span id="martial_points">0</span>  of <span id="max_martial_points">0</span></td>
 		</tr>
-		<tr class="stat_headers">
+		<tr class="stat_headers attribute_tr">
 			<td>Strength</td>
 			<td>Toughness</td>
 			<td>Agility</td>
@@ -93,7 +127,7 @@ tr.impossible
 			<td>Ballistic Skill</td>
 			<td>Accuracy</td>
 		</tr>
-		<tr class="mins">
+		<tr class="mins attribute_tr">
 			<td><label id="strength_min"></label></td>
 			<td><label id="toughness_min"></label></td>
 			<td><label id="agility_min"></label></td>
@@ -104,7 +138,7 @@ tr.impossible
 			<td><label id="ballistic_skill_min"></label></td>
 			<td><label id="accuracy_min"></label></td>
 		</tr>
-		<tr class="stats">
+		<tr class="stats attribute_tr">
 			<td id="strength"><input id="strength_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
 				<input id="strength_value" class="physical" type="text" size="2" maxlength="2" /> <input id="strength_plus" type="button"
 				value='+'  onclick="myAddOnclick(this)" /></td>
@@ -133,7 +167,7 @@ tr.impossible
 				<input id="accuracy_value" class="martial" type="text" size="2" maxlength="2" /> <input id="accuracy_plus" type="button"
 				value='+'  onclick="myAddOnclick(this)" /></td>
 		</tr>
-		<tr class="maxes">
+		<tr class="maxes attribute_tr">
 			<td><label id="strength_max"></label></td>
 			<td><label id="toughness_max"></label></td>
 			<td><label id="agility_max"></label></td>
@@ -144,7 +178,7 @@ tr.impossible
 			<td><label id="ballistic_skill_max"></label></td>
 			<td><label id="accuracy_max"></label></td>
 		</tr>
-		<tr class="validations">
+		<tr class="validations attribute_tr">
 			<td><label id="strength_attributevalidation">&nbsp;</label></td>
 			<td><label id="toughness_attributevalidation">&nbsp;</label></td>
 			<td><label id="agility_attributevalidation">&nbsp;</label></td>
@@ -199,7 +233,8 @@ tr.impossible
 	</table>
 
 	<br />
-
+	<p>Summary</p>
+	<p><div id="summary"></div></p>
 
 
 

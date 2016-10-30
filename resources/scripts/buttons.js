@@ -797,7 +797,7 @@ function loadSavedBuildsSelectOptions()
 		$.each(savedBuilds, function(idx, obj) {
 			$('select#saved_builds').append( $("<option>")
 					.val(idx)
-					.html(removeUnderlines(idx))
+					.html(removeUnderlines(idx)+" - " + removeUnderlines(obj.unit_type))
 			);
 		});
 	}
@@ -871,7 +871,7 @@ function adjustMasteryLevelsOnSpecialSkills(myBuild,myProfile)
 	$.each(myBuild.passiveSkills,function(idx,obj){
 		if (myBuild.passiveSkills[idx] !== 'Intrinsic')
 		{
-			adjustSkillLevelString(idx,myBuild.passiveSkills[idx], 'passive');
+			adjustSkillLevel(idx,myBuild.passiveSkills[idx], 'passive');
 		}
 	});
 }
@@ -1043,10 +1043,93 @@ function deleteBuild()
 }
 
 
-function displaySummary()
+function buildSkillRowHeader()
+{
+	return "Skill\tLevel\tAttr\tReq";
+}
+
+function buildSkillRow(skillName,skillLevel)
+{
+	var retval = removeUnderlines(skillName) +"\t"
+			+removeUnderlines(skillLevel) + "\t";
+
+	var req=findSkillAttrRequirement(skillName,skillLevel);
+	
+	
+	if (  (currentProfile.type === "eshin_sorcerer"
+			&& skillName==="guidance"
+			&& skillLevel==="basic" 
+		   )
+	    || ( req.req === 0) )
+	{
+		 retval=retval+"---\t";
+	}
+	else 
+	{
+		retval=retval + removeUnderlines(req.attr)+"\t"
+		+req.req;
+	}
+	return(retval);
+}
+
+function generateSummaryText()
 {
 	
+	var arr = generateSummaryArray();
+	var index=0;
+	var retString="";
+	for (index=0; index< arr.length ; index++)
+	{
+		retString=retString+"\n"+arr[index] ;
+	}
+	return retString;
+}
+function generateSummaryHtml()
+{
+	
+	var arr = generateSummaryArray();
+	var index=0;
+	var retString="";
+	for (index=0; index< arr.length ; index++)
+	{
+		retString=retString+"<br/>"+arr[index] ;
+	}
+	return retString;
+}
+
+function generateSummaryArray()
+{
+	var myArray=[];
+	var idx=0;
+	myArray.push($("#build_name").val());
+	
+	myArray.push("");
+	myArray.push("Active: " + Object.keys(currentBuild.activeSkills).length + " used");
+	myArray.push(buildSkillRowHeader());
+	$.each(currentBuild.activeSkills,function(idx,obj){
+		myArray.push(buildSkillRow(idx,obj));
+	});
+	
+	myArray.push("");
+	myArray.push("Passive: " + Object.keys(currentBuild.passiveSkills).length + " used");
+	myArray.push(buildSkillRowHeader());
+	$.each(currentBuild.passiveSkills,function(idx,obj){
+		myArray.push(buildSkillRow(idx,obj));
+	});
+	
+	
+	return myArray;
+}
+
+function copyToClipboard(text) 
+{
+  window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
 }
 
 
-
+function displaySummary()
+{
+	$("#summary").html(generateSummaryHtml());
+	$("textarea").toggleClass("showme");
+	$("textarea").val(generateSummaryText());
+}
