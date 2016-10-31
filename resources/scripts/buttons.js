@@ -1080,7 +1080,7 @@ function generateSummaryText()
 	var retString="";
 	for (index=0; index< arr.length ; index++)
 	{
-		retString=retString+"\n"+arr[index] ;
+		retString=retString+arr[index]+"\n";
 	}
 	return retString;
 }
@@ -1102,6 +1102,11 @@ function generateSummaryArray()
 	var myArray=[];
 	var idx=0;
 	myArray.push($("#build_name").val());
+	
+	myArray.push("");
+	myArray.push("Str " + currentBuild.attributes.strength + "\tLdr " + currentBuild.attributes.leadership + "\tWpn "+currentBuild.attributes.weapon_skill);
+	myArray.push("Tgh " + currentBuild.attributes.toughness + "\tInt " + currentBuild.attributes.intelligence + "\tBal "+currentBuild.attributes.ballistic_skill);
+	myArray.push("Agi " + currentBuild.attributes.agility + "\tAlr " + currentBuild.attributes.alertness + "\tAcc "+currentBuild.attributes.accuracy);
 	
 	myArray.push("");
 	myArray.push("Active: " + Object.keys(currentBuild.activeSkills).length + " used");
