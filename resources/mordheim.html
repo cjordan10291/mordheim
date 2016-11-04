@@ -71,6 +71,9 @@ tr.attribute_tr {
 	text-align: center;
 }
 
+table#build_controls td {
+	vertical-align: top;
+}
 
 #summary_button_tr {
 	vertical-align: top
@@ -94,18 +97,22 @@ input[type=text] {
     <a href="file:///morddata.json" target="_blank">Open JSON file</a><br />
     <input type="button" value="Get and parse JSON" class="button" />
 -->
-	<table>
+	<table id="build_controls">
 		<tr>
-			<td colspan='7'>Build Name:<input id="build_name" ></input></td>
-			<td><input type="button" value='Save'  onclick="saveBuild()" /></td>
-			<td><input type='button' value='Delete' onclick="deleteBuild()"/></td>
+			<td>Build Name:<input id="build_name" ></input></td>
+			<td><input type="button" value='Save'  onclick="saveBuild()" />
+			<input type='button' value='Delete' onclick="deleteBuild()"/></td>
+			<td rowspan='3'><textarea id="#summary_text" cols='60' rows='20'></textarea></td>
 		</tr>
 		<tr id="summary_button_tr">
-			<td colspan='3'>Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></td>
-			<td colspan='3'>Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></td>
+			<td >Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></td>
+			<td >Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></td>
+			<td></td>
+		</tr>
+		<tr>
 			<td></td>
 			<td id="summary_button_td"><input type='button' value='Summary' onclick="displaySummary()"/></td>
-			<td><textarea id="#summary_text" cols='40' rows='20'></textarea></td>
+			<td></td>
 		</tr>
 		</table>
 	<table>

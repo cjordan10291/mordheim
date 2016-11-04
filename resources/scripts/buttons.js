@@ -1072,8 +1072,10 @@ function calcSkillCost(skillName,skillLevel)
 		let basicReq=findSkillAttrRequirement(skillName,"basic");
 		
 		retval= 100 * (req.req + basicReq.req) / 3;
-		if (typeof jsonData.skills[findSkillType(skillName)].type
-				!== 'undefined')
+		if (typeof jsonData.skills[findSkillType(skillName)][skillName].type
+				!== 'undefined'
+			&& jsonData.skills[findSkillType(skillName)][skillName].type !== "basic"
+						)
 		{
 			retval= retval - 200;
 		}
