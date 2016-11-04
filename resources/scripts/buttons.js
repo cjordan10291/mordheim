@@ -1048,6 +1048,52 @@ function buildSkillRowHeader()
 	return "Skill\tLevel\tAttr\tReq";
 }
 
+
+function calcSkillCost(skillName,skillLevel)
+{
+	var req=findSkillAttrRequirement(skillName,skillLevel);
+	var retval=0;
+	if (  (currentProfile.type === "eshin_sorcerer"
+		&& skillName==="guidance"
+		&& skillLevel==="basic" ) 
+	    || (req.req === 0 )
+	    )
+	{
+		retval= 0;
+	}
+	else if (currentProfile.type === "eshin_sorcerer"
+		&& skillName==="guidance")
+	{
+		retval= 100 * req.req / 3;
+	}
+	else if (skillLevel === "mastery")
+	{
+		
+		let basicReq=findSkillAttrRequirement(skillName,"basic");
+		
+		retval= 100 * (req.req + basicReq.req) / 3;
+		if (typeof jsonData.skills[findSkillType(skillName)].type
+				!== 'undefined')
+		{
+			retval= retval - 200;
+		}
+		
+	}
+	else // skillLevel === "basic" 
+	{
+		retval= 100 * req.req / 3;
+		if (typeof jsonData.skills[findSkillType(skillName)][skillName].type
+				!== 'undefined'
+			&& jsonData.skills[findSkillType(skillName)][skillName].type !== "basic"
+						)
+		{
+			retval= retval - 100;
+		}
+	}
+	
+	return retval;
+}
+
 function buildSkillRow(skillName,skillLevel)
 {
 	var retval = removeUnderlines(skillName) +"\t"
@@ -1062,13 +1108,16 @@ function buildSkillRow(skillName,skillLevel)
 		   )
 	    || ( req.req === 0) )
 	{
-		 retval=retval+"---\t";
+		 retval=retval+"---\t---\t";
 	}
 	else 
 	{
 		retval=retval + removeUnderlines(req.attr)+"\t"
-		+req.req;
-	}
+		+req.req + "\t";
+	}    
+	
+	retval=retval+calcSkillCost(skillName,skillLevel);
+	
 	return(retval);
 }
 
@@ -1101,7 +1150,8 @@ function generateSummaryArray()
 {
 	var myArray=[];
 	var idx=0;
-	myArray.push($("#build_name").val());
+	var totalCost=0;
+	
 	
 	myArray.push("");
 	myArray.push("Str " + currentBuild.attributes.strength + "\tLdr " + currentBuild.attributes.leadership + "\tWpn "+currentBuild.attributes.weapon_skill);
@@ -1113,6 +1163,7 @@ function generateSummaryArray()
 	myArray.push(buildSkillRowHeader());
 	$.each(currentBuild.activeSkills,function(idx,obj){
 		myArray.push(buildSkillRow(idx,obj));
+		totalCost=totalCost+calcSkillCost(idx,obj);
 	});
 	
 	myArray.push("");
@@ -1120,9 +1171,10 @@ function generateSummaryArray()
 	myArray.push(buildSkillRowHeader());
 	$.each(currentBuild.passiveSkills,function(idx,obj){
 		myArray.push(buildSkillRow(idx,obj));
+		totalCost=totalCost+calcSkillCost(idx,obj);
 	});
 	
-	
+	myArray.unshift($("#build_name").val() + "   Cost:" + totalCost);
 	return myArray;
 }
 
