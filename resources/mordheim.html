@@ -102,17 +102,17 @@ input[type=text] {
 			<td>Build Name:<input id="build_name" ></input></td>
 			<td><input type="button" value='Save'  onclick="saveBuild()" />
 			<input type='button' value='Delete' onclick="deleteBuild()"/></td>
-			<td rowspan='3'><textarea id="#summary_text" cols='60' rows='20'></textarea></td>
 		</tr>
 		<tr id="summary_button_tr">
 			<td >Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></td>
 			<td >Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></td>
-			<td></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td id="summary_button_td"><input type='button' value='Summary' onclick="displaySummary()"/></td>
-			<td></td>
+		</tr>
+		<tr>
+			<td colspan='2'><textarea id="#summary_text" cols='60' rows='20'></textarea></td>
 		</tr>
 		</table>
 	<table>
