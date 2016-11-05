@@ -54,12 +54,12 @@ div#summary {
 }
 
 textarea {
-	display: none;
+	visibility: hidden;
 }
 
 
 textarea.showme {
-	display: inline;
+	visibility: visible;
 }
 
 tr.align_left {
@@ -84,12 +84,28 @@ input[type=text] {
     text-align: center;
 }
 
-div.buildcontrol {
+div.buildcontrolleft {
+	float: left;
+}
+div.buildcontrolright {
+	float: right;
+}
+
+div.buildcontrolcenter {
+	float: left
+}
+
+div.allbuildcontrols {
+	border: red inset 2px;
+	padding: 8px;
+	clear: left;
 	float: left;
 }
 
 div.attributediv {
-	clear: both;
+	clear: left;
+
+	
 }
 
 </style>
@@ -105,20 +121,21 @@ div.attributediv {
     <a href="file:///morddata.json" target="_blank">Open JSON file</a><br />
     <input type="button" value="Get and parse JSON" class="button" />
 -->
-
-	<div class="buildcontrol">
-		<div>Build Name:<input id="build_name" ></input></div>
-		<div>Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></div>
+	<div class='allbuildcontrols'>
+		<div class="buildcontrolleft">
+			<div>Build Name:<input id="build_name" ></input></div>
+			<div>Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></div>
+		</div>
+		<div class="buildcontrolcenter">
+			<div><input type="button" value='Save'  onclick="saveBuild()" ></input>
+			<input type='button' value='Delete' onclick="deleteBuild()"></input></div>
+			<div>Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></div>
+		</div>
 	</div>
-	<div class="buildcontrol">
-		<div><input type="button" value='Save'  onclick="saveBuild()" ></input>
-		<input type='button' value='Delete' onclick="deleteBuild()"></input></div>
-		<div>Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></div>
-	</div>
-	<div class="buildcontrol">
-		<div><input type='button' value='Summary' onclick="displaySummary()"/></div>
-		<div><textarea id="#summary_text" cols='60' rows='20'></textarea></div>
-	</div>
+		<div class="buildcontrolright">
+			<div><input type='button' value='Summary' onclick="displaySummary()"/></div>
+			<div><textarea id="#summary_text" cols='60' rows='20'></textarea></div>
+		</div>
 	<div class="attributediv">
 		<table>
 			<tr class="attribute_tr">
