@@ -84,6 +84,14 @@ input[type=text] {
     text-align: center;
 }
 
+div.buildcontrol {
+	float: left;
+}
+
+div.attributediv {
+	clear: both;
+}
+
 </style>
 
 
@@ -97,108 +105,106 @@ input[type=text] {
     <a href="file:///morddata.json" target="_blank">Open JSON file</a><br />
     <input type="button" value="Get and parse JSON" class="button" />
 -->
-	<table id="build_controls">
-		<tr>
-			<td>Build Name:<input id="build_name" ></input></td>
-			<td><input type="button" value='Save'  onclick="saveBuild()" />
-			<input type='button' value='Delete' onclick="deleteBuild()"/></td>
-		</tr>
-		<tr id="summary_button_tr">
-			<td >Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></td>
-			<td >Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td id="summary_button_td"><input type='button' value='Summary' onclick="displaySummary()"/></td>
-		</tr>
-		<tr>
-			<td colspan='2'><textarea id="#summary_text" cols='60' rows='20'></textarea></td>
-		</tr>
+
+	<div class="buildcontrol">
+		<div>Build Name:<input id="build_name" ></input></div>
+		<div>Unit Type:<select id="unit_type" onchange="unitTypeChanged(this)"></select></div>
+	</div>
+	<div class="buildcontrol">
+		<div><input type="button" value='Save'  onclick="saveBuild()" ></input>
+		<input type='button' value='Delete' onclick="deleteBuild()"></input></div>
+		<div>Builds:<select id="saved_builds" onchange="loadBuild(this)"></select></div>
+	</div>
+	<div class="buildcontrol">
+		<div><input type='button' value='Summary' onclick="displaySummary()"/></div>
+		<div><textarea id="#summary_text" cols='60' rows='20'></textarea></div>
+	</div>
+	<div class="attributediv">
+		<table>
+			<tr class="attribute_tr">
+				<td colspan='3'><label id="physical_groupvalidation">&nbsp;</label></td>
+				<td colspan='3'><label id="mental_groupvalidation">&nbsp;</label></td>
+				<td colspan='3'><label id="martial_groupvalidation">&nbsp;</label></td>
+			</tr>
+			<tr class="attribute_tr"><td colspan='3'>Physical Points:<span id="physical_points">0</span> left of <span id="max_physical_points">0</span></td>
+				<td colspan='3'>Mental Points:<span id="mental_points">0</span> left of <span id="max_mental_points">0</span></td>
+				<td colspan='3'>Martial Points:<span id="martial_points">0</span>  of <span id="max_martial_points">0</span></td>
+			</tr>
+			<tr class="stat_headers attribute_tr">
+				<td>Strength</td>
+				<td>Toughness</td>
+				<td>Agility</td>
+				<td>Leadership</td>
+				<td>Intelligence</td>
+				<td>Alertness</td>
+				<td>Weapon Skill</td>
+				<td>Ballistic Skill</td>
+				<td>Accuracy</td>
+			</tr>
+			<tr class="mins attribute_tr">
+				<td><label id="strength_min"></label></td>
+				<td><label id="toughness_min"></label></td>
+				<td><label id="agility_min"></label></td>
+				<td><label id="leadership_min"></label></td>
+				<td><label id="intelligence_min"></label></td>
+				<td><label id="alertness_min"></label></td>
+				<td><label id="weapon_skill_min"></label></td>
+				<td><label id="ballistic_skill_min"></label></td>
+				<td><label id="accuracy_min"></label></td>
+			</tr>
+			<tr class="stats attribute_tr">
+				<td id="strength"><input id="strength_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="strength_value" class="physical" type="text" size="2" maxlength="2" /> <input id="strength_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+				<td id="toughness"><input id="toughness_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="toughness_value" class="physical" type="text" size="2" maxlength="2" /> <input id="toughness_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+				<td id="agility"><input id="agility_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="agility_value" class="physical" type="text" size="2" maxlength="2" /> <input id="agility_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+				<td id="leadership"><input id="leadership_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="leadership_value" class="mental" type="text" size="2" maxlength="2" /> <input id="leadership_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+				<td id="intelligence"><input id="intelligence_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="intelligence_value" class="mental" type="text" size="2" maxlength="2" /> <input id="intelligence_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+				<td id="alertness"><input id="alertness_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="alertness_value" class="mental" type="text" size="2" maxlength="2" /> <input id="alertness_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+				<td id="weapon_skill"><input id="weapon_skill_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="weapon_skill_value" class="martial" type="text" size="2" maxlength="2" /> <input id="weapon_skill_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+				<td id="ballistic_skill"><input id="ballistic_skill_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="ballistic_skill_value" class="martial" type="text" size="2" maxlength="2" /> <input id="ballistic_skill_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+				<td id="accuracy"><input id="accuracy_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
+					<input id="accuracy_value" class="martial" type="text" size="2" maxlength="2" /> <input id="accuracy_plus" type="button"
+					value='+'  onclick="myAddOnclick(this)" /></td>
+			</tr>
+			<tr class="maxes attribute_tr">
+				<td><label id="strength_max"></label></td>
+				<td><label id="toughness_max"></label></td>
+				<td><label id="agility_max"></label></td>
+				<td><label id="leadership_max"></label></td>
+				<td><label id="intelligence_max"></label></td>
+				<td><label id="alertness_max"></label></td>
+				<td><label id="weapon_skill_max"></label></td>
+				<td><label id="ballistic_skill_max"></label></td>
+				<td><label id="accuracy_max"></label></td>
+			</tr>
+			<tr class="validations attribute_tr">
+				<td><label id="strength_attributevalidation">&nbsp;</label></td>
+				<td><label id="toughness_attributevalidation">&nbsp;</label></td>
+				<td><label id="agility_attributevalidation">&nbsp;</label></td>
+				<td><label id="leadership_attributevalidation">&nbsp;</label></td>
+				<td><label id="intelligence_attributevalidation">&nbsp;</label></td>
+				<td><label id="alertness_attributevalidation">&nbsp;</label></td>
+				<td><label id="weapon_skill_attributevalidation">&nbsp;</label></td>
+				<td><label id="ballistic_skill_attributevalidation">&nbsp;</label></td>
+				<td><label id="accuracy_attributevalidation">&nbsp;</label></td>
+			</tr>
 		</table>
-	<table>
-		<tr class="attribute_tr">
-			<td colspan='3'><label id="physical_groupvalidation">&nbsp;</label></td>
-			<td colspan='3'><label id="mental_groupvalidation">&nbsp;</label></td>
-			<td colspan='3'><label id="martial_groupvalidation">&nbsp;</label></td>
-		</tr>
-		<tr class="attribute_tr"><td colspan='3'>Physical Points:<span id="physical_points">0</span> left of <span id="max_physical_points">0</span></td>
-			<td colspan='3'>Mental Points:<span id="mental_points">0</span> left of <span id="max_mental_points">0</span></td>
-			<td colspan='3'>Martial Points:<span id="martial_points">0</span>  of <span id="max_martial_points">0</span></td>
-		</tr>
-		<tr class="stat_headers attribute_tr">
-			<td>Strength</td>
-			<td>Toughness</td>
-			<td>Agility</td>
-			<td>Leadership</td>
-			<td>Intelligence</td>
-			<td>Alertness</td>
-			<td>Weapon Skill</td>
-			<td>Ballistic Skill</td>
-			<td>Accuracy</td>
-		</tr>
-		<tr class="mins attribute_tr">
-			<td><label id="strength_min"></label></td>
-			<td><label id="toughness_min"></label></td>
-			<td><label id="agility_min"></label></td>
-			<td><label id="leadership_min"></label></td>
-			<td><label id="intelligence_min"></label></td>
-			<td><label id="alertness_min"></label></td>
-			<td><label id="weapon_skill_min"></label></td>
-			<td><label id="ballistic_skill_min"></label></td>
-			<td><label id="accuracy_min"></label></td>
-		</tr>
-		<tr class="stats attribute_tr">
-			<td id="strength"><input id="strength_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="strength_value" class="physical" type="text" size="2" maxlength="2" /> <input id="strength_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-			<td id="toughness"><input id="toughness_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="toughness_value" class="physical" type="text" size="2" maxlength="2" /> <input id="toughness_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-			<td id="agility"><input id="agility_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="agility_value" class="physical" type="text" size="2" maxlength="2" /> <input id="agility_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-			<td id="leadership"><input id="leadership_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="leadership_value" class="mental" type="text" size="2" maxlength="2" /> <input id="leadership_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-			<td id="intelligence"><input id="intelligence_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="intelligence_value" class="mental" type="text" size="2" maxlength="2" /> <input id="intelligence_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-			<td id="alertness"><input id="alertness_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="alertness_value" class="mental" type="text" size="2" maxlength="2" /> <input id="alertness_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-			<td id="weapon_skill"><input id="weapon_skill_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="weapon_skill_value" class="martial" type="text" size="2" maxlength="2" /> <input id="weapon_skill_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-			<td id="ballistic_skill"><input id="ballistic_skill_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="ballistic_skill_value" class="martial" type="text" size="2" maxlength="2" /> <input id="ballistic_skill_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-			<td id="accuracy"><input id="accuracy_minus" type="button" value='-' onclick="mySubtractOnclick(this)"/>
-				<input id="accuracy_value" class="martial" type="text" size="2" maxlength="2" /> <input id="accuracy_plus" type="button"
-				value='+'  onclick="myAddOnclick(this)" /></td>
-		</tr>
-		<tr class="maxes attribute_tr">
-			<td><label id="strength_max"></label></td>
-			<td><label id="toughness_max"></label></td>
-			<td><label id="agility_max"></label></td>
-			<td><label id="leadership_max"></label></td>
-			<td><label id="intelligence_max"></label></td>
-			<td><label id="alertness_max"></label></td>
-			<td><label id="weapon_skill_max"></label></td>
-			<td><label id="ballistic_skill_max"></label></td>
-			<td><label id="accuracy_max"></label></td>
-		</tr>
-		<tr class="validations attribute_tr">
-			<td><label id="strength_attributevalidation">&nbsp;</label></td>
-			<td><label id="toughness_attributevalidation">&nbsp;</label></td>
-			<td><label id="agility_attributevalidation">&nbsp;</label></td>
-			<td><label id="leadership_attributevalidation">&nbsp;</label></td>
-			<td><label id="intelligence_attributevalidation">&nbsp;</label></td>
-			<td><label id="alertness_attributevalidation">&nbsp;</label></td>
-			<td><label id="weapon_skill_attributevalidation">&nbsp;</label></td>
-			<td><label id="ballistic_skill_attributevalidation">&nbsp;</label></td>
-			<td><label id="accuracy_attributevalidation">&nbsp;</label></td>
-		</tr>
-	</table>
+	</div>
 	<div id="skilldiv">
 		<h2>Skills:   <span id="remaining_skill_points">0</span> remaining of <span id="total_skill_points">0</span></h2>
 		<h3 style="text-align: left;">Active Skills: <span id="active_slots_left">0</span> slots left</h3>
